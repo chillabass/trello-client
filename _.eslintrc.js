@@ -29,12 +29,6 @@ module.exports = {
     'react/no-unescaped-entities': 'off',
     'react/no-unused-prop-types': 'error',
     'react/no-unused-state': 'error',
-    'react/function-component-definition': [
-      2,
-      {
-        namedComponents: 'function-declaration',
-      },
-    ],
 
     '@typescript-eslint/adjacent-overload-signatures': 'warn',
     '@typescript-eslint/member-delimiter-style': 'error',
