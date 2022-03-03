@@ -26,9 +26,9 @@ export const Column: React.FC = () => {
 
 const StyledColumn = styled.div`
   min-height: 70px;
-  max-height: 100vh;
+  max-height: 100%;
   width: 272px;
-  background-color: #EBECF0;
+  background-color: #ebecf0;
   border-radius: 5px;
   margin: 10px;
   display: flex;

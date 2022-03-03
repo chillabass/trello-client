@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-// import './index.css';
 
 export const Task: React.FC = () => {
   return (

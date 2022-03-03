@@ -52,6 +52,7 @@ const StyledButton = styled(Link)`
   border: 1px solid #eef;
   border-radius: 8px;
   text-decoration: none;
+  transition: .2s;
 
   &:hover {
     color: #ff9926;
