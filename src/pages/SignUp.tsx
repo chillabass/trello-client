@@ -1,12 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
+import { useDispatch } from 'react-redux';
+import { signup } from '../store/reducers/userReduser';
 
 export const Signuppage: React.FC = () => {
+  const dispatch = useDispatch();
+  const ref = {
+    current: null,
+  };
+  
+  const onSubmitHandler = () => {
+    
+  }
+
   return (
     <StyledSignup>
       <StyledTitle>Registration</StyledTitle>
-      <StyledForm>
+      <StyledForm
+        onSubmit={onSubmitHandler}
+        ref={ref}
+      >
         <FormItem
           label='Login'
           inputType='text' />
@@ -51,26 +65,6 @@ const StyledForm = styled.form`
   height: fit-content;
   border-radius: 10px;
   padding: 10px 15px;
-`;
-
-const StyledFormItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 25px 0;
-`;
-
-const StyledLabel = styled.label`
-  margin-bottom: 10px;
-  text-align: left;
-  font-size: 16px;
-  font-style: italic;
-`;
-
-const StyledInput = styled.input`
-  border: none;
-  border-radius: 5px;
-  height: 37px;
-  font-size: 18px;
 `;
 
 const StyledButton = styled.button`
