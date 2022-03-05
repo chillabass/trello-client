@@ -1,17 +1,41 @@
-import React from 'react';
+import React, { SyntheticEvent, useRef } from 'react';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
 import { useDispatch } from 'react-redux';
 import { signup } from '../store/reducers/userReduser';
 
+interface UserData {
+  login: string;
+  email: string;
+  password: string;
+  confirm: string;
+  fullName: string;
+};
+
 export const Signuppage: React.FC = () => {
   const dispatch = useDispatch();
-  const ref = {
-    current: null,
-  };
-  
-  const onSubmitHandler = () => {
-    
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const onSubmitHandler = (event: SyntheticEvent): void => {
+    event.preventDefault();
+    const target = event.target as typeof event.target & {
+      login: { value: string };
+      email: { value: string };
+      password: { value: string };
+      confirm: { value: string };
+      fullname: { value: string };
+    };
+    const userData: UserData = {
+      login: target.login.value,
+      email: target.email.value,
+      password: target.password.value,
+      confirm: target.confirm.value,
+      fullName: target.fullname.value,
+    };
+    if (userData.password === userData.confirm) {
+      dispatch(signup(userData));
+    }
   }
 
   return (
@@ -19,22 +43,27 @@ export const Signuppage: React.FC = () => {
       <StyledTitle>Registration</StyledTitle>
       <StyledForm
         onSubmit={onSubmitHandler}
-        ref={ref}
+        ref={formRef}
       >
         <FormItem
           label='Login'
+          name='login'
           inputType='text' />
         <FormItem
           label='E-mail'
+          name='email'
           inputType='email' />
         <FormItem
           label='Password'
+          name='password'
           inputType='password' />
         <FormItem
           label='Confirm password'
+          name='confirm'
           inputType='password' />
         <FormItem
           label='Fullname'
+          name='fullname'
           inputType='text' />
         <StyledButton>Register</StyledButton>
       </StyledForm>

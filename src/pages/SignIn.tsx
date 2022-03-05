@@ -1,14 +1,42 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
+import { useDispatch } from 'react-redux';
+import { signin } from '../store/reducers/userReduser';
+
+interface UserData {
+  login: string;
+  password: string;
+};
 
 export const Signinpage: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const onSubmitHandler = (event: SyntheticEvent): void => {
+    event.preventDefault();
+    const target = event.target as typeof event.target & {
+      login: { value: string };
+      password: { value: string };
+    };
+    const userData: UserData = {
+      login: target.login.value,
+      password: target.password.value,
+    };
+    dispatch(signin(userData));
+  }
+
   return (
   <StyledSignup>
     <StyledTitle>Authentication</StyledTitle>
-    <StyledForm>
-      <FormItem label='Login' inputType='text'></FormItem>
-      <FormItem label='Password' inputType='password'></FormItem>
+    <StyledForm onSubmit={onSubmitHandler}>
+      <FormItem 
+        label='Login' 
+        name='login' 
+        inputType='text'/>
+      <FormItem 
+        label='Password' 
+        name='password' 
+        inputType='password'/>
       <StyledButton>Sign in</StyledButton>
     </StyledForm>
   </StyledSignup>

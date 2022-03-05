@@ -4,13 +4,17 @@ import styled from 'styled-components';
 interface FormItemProps {
   label: string,
   inputType: string,
+  name: string,
 };
 
-export const FormItem: React.FC<FormItemProps> = ({ label, inputType }: FormItemProps) => {
+export const FormItem: React.FC<FormItemProps> = ({ label, inputType, name }: FormItemProps) => {
 return (
   <StyledFormItem>
     <StyledLabel>{label}</StyledLabel>
-    <StyledInput type={inputType}></StyledInput>
+    <StyledInput 
+      name={name} 
+      type={inputType}
+    />
   </StyledFormItem>
 )};
 
