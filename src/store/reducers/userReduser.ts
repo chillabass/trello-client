@@ -1,26 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../../config';
+import { createSlice, Slice } from '@reduxjs/toolkit';
 
-export const userSlice = createSlice({
+export const userSlice: Slice = createSlice({
   name: 'users',
   initialState: {
     currentUser: {},
   },
   reducers: {
-    signup: (state, action) => {
-      axios.post(`${PROTOCOL}//${SERVER_HOST}:${SERVER_PORT}/users/signup`, action.payload).then(response => {
-        console.log(response);
-      });
+    auth: (state, action) => {
+      const { token, user }: {token: string, user: object} = action.payload;
+      console.log(user);
+      localStorage.setItem('token', token);
+      state.currentUser = user;
     },
-    signin: (state, action) => {
-      axios.post(`${PROTOCOL}//${SERVER_HOST}:${SERVER_PORT}/users/signin`, action.payload).then(response => {
-        console.log(response);
-      });
-    },
+    signout: (state) => {
+      state.currentUser = {};
+      localStorage.removeItem('token');
+    }
   },
 });
 
-export const { signup, signin } = userSlice.actions;
+export const { auth, signout } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -2,10 +2,11 @@ import React, { SyntheticEvent, useRef } from 'react';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
 import { useDispatch } from 'react-redux';
-import { signup } from '../store/reducers/userReduser';
+import { fetchSignUp } from '../store/asyncActions/userActions';
+import validator from 'validator';
 
 interface UserData {
-  login: string;
+  [login: string]: string;
   email: string;
   password: string;
   confirm: string;
@@ -16,6 +17,33 @@ export const Signuppage: React.FC = () => {
   const dispatch = useDispatch();
 
   const formRef = useRef<HTMLFormElement>(null);
+
+  const isValidData = (userData: UserData): boolean => {
+    // Удаляем пробелы и проверяем не пустые ли поля
+    for (let key in userData) {
+      userData[key] = userData[key].trim();
+      if (userData[key] === '') {
+        alert(`Поле ${key} не должно быть пустым!`);
+        return false;
+      } 
+    }
+    if (!validator.isEmail(userData['email'])) {
+      alert('Введите корректный E-Mail');
+      return false;
+    }
+    // Проверяем пароли
+    if (userData.password.length > 5) {
+      if (userData.password === userData.confirm) {
+        return true;
+      } else {
+        alert('пароли не совпадают!');
+        return false;
+      } 
+    } else {
+      alert('Пароль должен состоять минимум из 6 символов!');
+      return false;
+    }
+  }
 
   const onSubmitHandler = (event: SyntheticEvent): void => {
     event.preventDefault();
@@ -33,8 +61,8 @@ export const Signuppage: React.FC = () => {
       confirm: target.confirm.value,
       fullName: target.fullname.value,
     };
-    if (userData.password === userData.confirm) {
-      dispatch(signup(userData));
+    if (isValidData(userData)) {
+      dispatch(fetchSignUp(userData));
     }
   }
 

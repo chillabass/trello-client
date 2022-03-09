@@ -2,7 +2,7 @@ import React, { SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
 import { useDispatch } from 'react-redux';
-import { signin } from '../store/reducers/userReduser';
+import { fetchSignIn } from '../store/asyncActions/userActions';
 
 interface UserData {
   login: string;
@@ -22,7 +22,7 @@ export const Signinpage: React.FC = () => {
       login: target.login.value,
       password: target.password.value,
     };
-    dispatch(signin(userData));
+    dispatch(fetchSignIn(userData));
   }
 
   return (
