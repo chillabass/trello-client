@@ -1,15 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import store from '../store/store';
 
 export const Header: React.FC = () => {
   return (
     <StyledHeader>
       <StyledLogo to='/'>Trello</StyledLogo>
       <StyledProfileBlock>
-        <StyledButton to='/signup'>Sign Up</StyledButton>
-        <StyledButton to='/signin'>Sign In</StyledButton>
-        <StyledProfile />
+        {store.getState().users['isAuth'] ? <StyledProfile /> :
+        <>
+          <StyledButton to='/signup'>Sign Up</StyledButton>
+          <StyledButton to='/signin'>Sign In</StyledButton>
+        </>}
       </StyledProfileBlock>
     </StyledHeader>
   );
@@ -43,6 +46,7 @@ const StyledProfile = styled.div`
   height: 40px;
   border-radius: 50%;
   background-color: #ff9926;
+  cursor: pointer;
 `;
 
 const StyledButton = styled(Link)`

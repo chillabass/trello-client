@@ -23,7 +23,7 @@ const StyledBoardHeader = styled.div`
 `;
 
 const StyledBoardItem = styled.div`
-  background-color: rgb(155, 155, 155);
+  background-color: rgb(204, 204, 204);
   padding: 5px 10px;
   border-radius: 7px;
   margin: 0 10px;

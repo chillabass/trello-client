@@ -7,6 +7,7 @@ import { Mainpage } from './pages/Main';
 import { Signuppage } from './pages/SignUp';
 import { Signinpage } from './pages/SignIn';
 import { NotFoundpage } from './pages/NotFound';
+import { Profilepage } from './pages/Profile';
 
 export const App: React.FC = () => (
   <>
@@ -23,6 +24,10 @@ export const App: React.FC = () => (
       <Route 
         path="/signin" 
         element={<Signinpage />} 
+      />
+      <Route 
+        path="/profile" 
+        element={<Profilepage />} 
       />
       <Route 
         path="*" 

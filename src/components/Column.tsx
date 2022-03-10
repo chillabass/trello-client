@@ -34,7 +34,7 @@ const StyledColumn = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
-  
+  box-shadow: 0px 3px 12px 1px #8b8b8b;
 `;
 
 const StyledColumnHeader = styled.div`
