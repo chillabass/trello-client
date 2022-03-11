@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 import './App.css';
 import { Header } from './components/Header';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate, RouteProps } from 'react-router-dom';
 
 import { Mainpage } from './pages/Main';
 import { Signuppage } from './pages/SignUp';
 import { Signinpage } from './pages/SignIn';
 import { NotFoundpage } from './pages/NotFound';
 import { Profilepage } from './pages/Profile';
+import store from './store/store';
+import { RequireAuth } from './hoc/RequireAuth';
 
 export const App: React.FC = () => (
   <>
@@ -27,7 +29,11 @@ export const App: React.FC = () => (
       />
       <Route 
         path="/profile" 
-        element={<Profilepage />} 
+        element={
+        <RequireAuth>
+          <Profilepage />
+        </RequireAuth>
+        } 
       />
       <Route 
         path="*" 
