@@ -1,8 +1,19 @@
 import React from 'react';
 import { styled } from '@mui/styles';
-import { Avatar, Box, Container, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { signout } from '../store/reducers/userReduser';
+import { useNavigate } from 'react-router-dom';
 
 export const Profilepage: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const clickHandler = () => {
+    dispatch(signout(''));
+    navigate('/');
+  }
+
   return (
     <StyledContainer>
       <Avatar sx={{ width: 100, height: 100 }}/>
@@ -11,6 +22,7 @@ export const Profilepage: React.FC = () => {
           Login:
         </Typography>
       </Box>
+      <Button onClick={clickHandler}>Выйти</Button>
     </StyledContainer>
   );
 }

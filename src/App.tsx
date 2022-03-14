@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import './App.css';
 import { Header } from './components/Header';
 import { Routes, Route, Navigate, RouteProps } from 'react-router-dom';
@@ -8,37 +8,37 @@ import { Signuppage } from './pages/SignUp';
 import { Signinpage } from './pages/SignIn';
 import { NotFoundpage } from './pages/NotFound';
 import { Profilepage } from './pages/Profile';
-import store from './store/store';
-import { RequireAuth } from './hoc/RequireAuth';
+import { PrivateRoute } from './hoc/PrivateRouter';
 
-export const App: React.FC = () => (
-  <>
+export const App: React.FC = () => {
+  return (<>
     <Header />
     <Routes>
-      <Route 
-        path="/" 
-        element={<Mainpage />} 
+      <Route
+        path='/'
+        element={<Mainpage />}
       />
-      <Route 
-        path="/signup" 
-        element={<Signuppage />} 
+      <Route
+        path='/signup'
+        element={<Signuppage />}
       />
-      <Route 
-        path="/signin" 
-        element={<Signinpage />} 
+      <Route
+        path='/signin'
+        element={<Signinpage />}
       />
-      <Route 
-        path="/profile" 
+      <Route
+        path='/profile'
         element={
-        <RequireAuth>
-          <Profilepage />
-        </RequireAuth>
-        } 
+          <PrivateRoute>
+            <Profilepage />
+          </PrivateRoute>
+        }
       />
-      <Route 
-        path="*" 
-        element={<NotFoundpage />} 
+      <Route
+        path='*'
+        element={<NotFoundpage />}
       />
     </Routes>
   </>
-);
+  )
+};

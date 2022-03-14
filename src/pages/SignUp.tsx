@@ -2,8 +2,8 @@ import React, { SyntheticEvent, useRef } from 'react';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
 import { useDispatch } from 'react-redux';
-import { fetchSignUp } from '../store/asyncActions/userActions';
 import validator from 'validator';
+import { fetchSignUp } from '../store/asyncActions/userActions';
 
 interface UserData {
   [login: string]: string;

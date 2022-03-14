@@ -2,17 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import store from '../store/store';
+import { IUserData } from '../types/user';
 
 export const Header: React.FC = () => {
   return (
     <StyledHeader>
       <StyledLogo to='/'>Trello</StyledLogo>
       <StyledProfileBlock>
-        {store.getState().users['isAuth'] ? <StyledProfile /> :
-        <>
-          <StyledButton to='/signup'>Sign Up</StyledButton>
-          <StyledButton to='/signin'>Sign In</StyledButton>
-        </>}
+        {store.getState().users['isAuth'] ?
+          <StyledProfile to='/profile'>
+          </StyledProfile> :
+          <>
+            <StyledButton to='/signup'>Sign Up</StyledButton>
+            <StyledButton to='/signin'>Sign In</StyledButton>
+          </>}
       </StyledProfileBlock>
     </StyledHeader>
   );
@@ -41,7 +44,7 @@ const StyledLogo = styled(Link)`
   }
 `;
 
-const StyledProfile = styled.div`
+const StyledProfile = styled(Link)`
   width: 40px;
   height: 40px;
   border-radius: 50%;
