@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Task } from './Task';
+import plusIcon from '../img/plus.svg';
 
 export const Column: React.FC = () => {
   return (
@@ -19,7 +20,10 @@ export const Column: React.FC = () => {
       <Task />
       <Task />
       <Task />
-      <StyledFooter>➕ Add to card</StyledFooter>
+      <StyledFooter>
+        <StyledIcon src={plusIcon} alt="add_icon" />
+        <label>Add to card</label>
+      </StyledFooter>
     </StyledColumn>
   );
 }
@@ -27,7 +31,7 @@ export const Column: React.FC = () => {
 const StyledColumn = styled.div`
   min-height: 70px;
   max-height: 100%;
-  width: 272px;
+  min-width: 272px;
   background-color: #ebecf0;
   border-radius: 5px;
   margin: 10px;
@@ -63,10 +67,17 @@ const StyledColumnMenu = styled.div`
 `;
 
 const StyledFooter = styled.div`
-  box-shadow: 0px 1px 6px -1px #444;
+  display: flex;
+  justify-content: flex-start;
   padding: 5px;
-  border-radius: 3px;
   margin: 5px 0;
+  border-radius: 3px;
   color: #888;
   font-size: 15px;
+  box-shadow: 0px 1px 6px -1px #444;
+`;
+
+const StyledIcon = styled.img`
+  width: 16px;
+  margin-right: 10px;
 `;

@@ -10,8 +10,9 @@ export const Task: React.FC = () => {
 }
 
 const StyledTask = styled.div`
-  box-shadow: 0px 1px 6px -1px #444;
   padding: 5px;
-  border-radius: 3px;
   margin: 5px 0;
+  border-radius: 3px;
+  box-shadow: 0px 1px 6px -1px #444;
+  cursor: pointer;
 `;

@@ -7,9 +7,6 @@ export const BoardHeader: React.FC = () => {
       <StyledBoardItem>
         Board Name
       </StyledBoardItem>
-      <StyledBoardItem>
-        Workspace Name
-      </StyledBoardItem>
     </StyledBoardHeader>
   );
 }
@@ -27,5 +24,5 @@ const StyledBoardItem = styled.div`
   padding: 5px 10px;
   border-radius: 7px;
   margin: 0 10px;
-  cursor: pointer;
+  cursor: default;
 `;

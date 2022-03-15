@@ -5,11 +5,12 @@ import store from '../store/store';
 import { IUserData } from '../types/user';
 
 export const Header: React.FC = () => {
+  const isAuth = store.getState().users.isAuth;
   return (
     <StyledHeader>
       <StyledLogo to='/'>Trello</StyledLogo>
       <StyledProfileBlock>
-        {store.getState().users['isAuth'] ?
+        {isAuth ?
           <StyledProfile to='/profile'>
           </StyledProfile> :
           <>
