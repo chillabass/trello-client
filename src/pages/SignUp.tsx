@@ -1,9 +1,9 @@
 import React, { SyntheticEvent, useRef } from 'react';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
-import { useDispatch } from 'react-redux';
 import validator from 'validator';
 import { fetchSignUp } from '../store/asyncActions/userActions';
+import { useAppDispatch } from '../store/hooks';
 
 interface UserData {
   [login: string]: string;
@@ -14,7 +14,7 @@ interface UserData {
 };
 
 export const Signuppage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const formRef = useRef<HTMLFormElement>(null);
 

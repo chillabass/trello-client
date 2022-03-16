@@ -1,5 +1,5 @@
 import { Navigate, Outlet, Route, RoutesProps, useLocation } from "react-router"
-import store from "../store/store";
+import { store } from "../store/store";
 
 export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const location = useLocation();

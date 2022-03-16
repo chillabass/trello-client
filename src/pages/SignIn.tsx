@@ -1,8 +1,8 @@
 import React, { SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
-import { useDispatch } from 'react-redux';
 import { fetchSignIn } from '../store/asyncActions/userActions';
+import { useAppDispatch } from '../store/hooks';
 
 interface UserData {
   login: string;
@@ -10,7 +10,7 @@ interface UserData {
 };
 
 export const Signinpage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSubmitHandler = (event: SyntheticEvent): void => {
     event.preventDefault();

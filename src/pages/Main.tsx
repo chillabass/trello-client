@@ -3,11 +3,10 @@ import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/styles';
-import store from '../store/store';
+import { useAppSelector } from '../store/hooks';
 
 export const Mainpage: React.FC = () => {
-  const navigate = useNavigate();
-  const isAuth = store.getState().users.isAuth
+  const isAuth = useAppSelector(state => state.users.isAuth);
 
   return (
     <>

@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import store from '../store/store';
+import { useAppSelector } from '../store/hooks';
+import { store } from '../store/store';
 import { IUserData } from '../types/user';
 
 export const Header: React.FC = () => {
-  const isAuth = store.getState().users.isAuth;
+  const isAuth = useAppSelector(state => state.users.isAuth);
+
   return (
     <StyledHeader>
       <StyledLogo to='/'>Trello</StyledLogo>

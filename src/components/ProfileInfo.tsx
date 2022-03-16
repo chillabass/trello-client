@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar, Box, Button, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import { IUser } from '../types/user';
-import store from '../store/store';
+import { store } from '../store/store';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { signout } from '../store/reducers/userReducer';
