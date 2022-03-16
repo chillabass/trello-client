@@ -1,44 +1,37 @@
 import { createSlice, Slice } from '@reduxjs/toolkit';
+import { IDesk } from '../../types/desk';
 
 export const deskSlice: Slice = createSlice({
-  name: 'desks',
+  name: 'desk',
   initialState: {
-    desk: {
-      columns: {
-        tasks: []
-      },
-    },
+    desks: [],
   },
   reducers: {
-    addColumn: (state, action) => {
-      
+    addDesk: (state, action) => {
+      const { title } = action.payload;
+      const desk: IDesk = {
+        id: `d${Date.now()}`,
+        title,
+      };
+      state.desks.push(desk);
     },
-    editColumn: (state, action) => {
-      
+    editDesk: (state, action) => {
+      const id = action.payload.id;
+      const title = action.payload.title;
+      state.desks.filter((desk: { id: string; }) => desk.id === id).title = title;
     },
-    deleteColumn: (state, action) => {
-      
-    },
-    addTask: (state, action) => {
-      
-    },
-    editTask: (state, action) => {
-      
-    },
-    deleteTask: (state, action) => {
-      
-    },
-    
+    deleteDesk: (state, action) => {
+      const id = action.payload.id;
+      const index = state.desks.findIndex((desk: { id: string; }) => desk.id === id);
+      state.desks.splice(index, 1);
+    },    
   },
 });
 
 export const { 
-  addColumn, 
-  editColumn, 
-  deleteColumn,
-  addTask, 
-  editTask, 
-  deleteTask,
+  addDesk, 
+  editDesk, 
+  deleteDesk,
 } = deskSlice.actions;
 
 export default deskSlice.reducer;
