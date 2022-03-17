@@ -1,32 +1,28 @@
 import React from 'react';
-import { Avatar, Box, Button, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import { IUser } from '../types/user';
-import { store } from '../store/store';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { signout } from '../store/reducers/userReducer';
-
-const user: IUser = store.getState().users.currentUser;
-
-
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 export const ProfileInfo: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user: IUser = useAppSelector(state => state.users.currentUser);
 
   const clickEditHandler = () => {
 
   };
-  
+
   const clickSignoutHandler = () => {
     dispatch(signout(''));
     navigate('/');
   };
-  
+
   return (
-    <>
-    <StyledInfoLeft>
+    <StyledContainer>
+      <StyledInfoLeft>
         <StyledAvatar />
       </StyledInfoLeft>
       <StyledInfoRight>
@@ -51,29 +47,39 @@ export const ProfileInfo: React.FC = () => {
           {`Role: ${user.role}`}
         </StyledTypography>
         <Button
+          disabled
           color='primary'
           onClick={clickEditHandler}
           variant='contained'
           style={{ marginRight: '15px' }}>
-            Редактировать
+          Редактировать
         </Button>
         <Button
           color='error'
           onClick={clickSignoutHandler}
           variant='contained'>
-            Выйти
+          Выйти
         </Button>
       </StyledInfoRight>
-    </>
+    </StyledContainer>
   )
 }
 
+const StyledContainer = styled(Container)({
+  display: 'flex',
+  justifyContent: 'flex-start',
+  flexDirection: 'row',
+  padding: '30px',
+});
+
 
 const StyledInfoLeft = styled(Box)({
+  display: 'flex',
+  flexDirection: 'row',
 });
 
 const StyledAvatar = styled(Avatar)({
-  minWidth: 100, 
+  minWidth: 100,
   minHeight: 100,
   margin: '15px',
 });

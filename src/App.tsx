@@ -11,7 +11,8 @@ import { Profilepage } from './pages/Profile';
 import { PrivateRoute } from './hoc/PrivateRouter';
 
 export const App: React.FC = () => {
-  return (<>
+  return (
+  <>
     <Header />
     <Routes>
       <Route
