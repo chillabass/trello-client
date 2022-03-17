@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { CreateItem } from './CreateItem';
 import { addDesk } from '../store/reducers/deskReducer';
