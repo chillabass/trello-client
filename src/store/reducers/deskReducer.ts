@@ -30,7 +30,7 @@ export const deskSlice: Slice = createSlice({
       const { id } = action.payload;
       const index = state.desks.findIndex((desk: { id: string; }) => desk.id === id);
       state.desks.splice(index, 1);
-    },    
+    },
   },
 });
 

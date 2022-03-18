@@ -8,6 +8,7 @@ import { Signuppage } from './pages/SignUp';
 import { Signinpage } from './pages/SignIn';
 import { NotFoundpage } from './pages/NotFound';
 import { Profilepage } from './pages/Profile';
+import { Deskpage } from './pages/Desk';
 import { PrivateRoute } from './hoc/PrivateRouter';
 
 export const App: React.FC = () => {
@@ -32,6 +33,14 @@ export const App: React.FC = () => {
         element={
           <PrivateRoute>
             <Profilepage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path='/desk/:id'
+        element={
+          <PrivateRoute>
+            <Deskpage />
           </PrivateRoute>
         }
       />

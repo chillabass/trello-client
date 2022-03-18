@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CreateItem } from './CreateItem';
 import { addDesk } from '../store/reducers/deskReducer';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { CreateButton } from './CreateButton';
+import { FormDialog as Form } from './Form';
 
 export const ProfileDesks: React.FC = () => {
+  const [formActive, setFormActive] = useState(false);
   const desks = useAppSelector(state => state.desks.desks);
   const dispatch = useAppDispatch();
 
   const addClickHandler = () => {
-    dispatch(addDesk({title: 'Test!'}));
+    setFormActive(true);
   };
+
+  const getTitle = (title: string | null | undefined) => {
+    dispatch(addDesk({title,}));
+  }
 
   return (
     <StyledContainer>
@@ -18,17 +25,24 @@ export const ProfileDesks: React.FC = () => {
       return (
         <CreateItem
           title={desk.title}
-          href={desk.id}
+          href={`${desk.id}`}
         />
       );
     })}
-      <StyledButton 
+      <CreateButton
+        title='Create desk!'
         onClick={addClickHandler}
-      >
-        Create desk!
-      </StyledButton>
+      />
+    <Form 
+      open={formActive} 
+      setOpen={setFormActive}
+      dialogTitle='Desk name'
+      dialogContentText='Enter desk name'
+      label='Desk name'
+      getTitle={getTitle}
+    />
     </StyledContainer>
-  )
+  );
 };
 
 
@@ -38,23 +52,4 @@ const StyledContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   padding: 30px;
-`;
-
-const StyledButton = styled.button`
-  padding: 5px 10px;
-  margin: 5px;
-  width: 150px;
-  height: 80px;
-  max-width: 150px;
-  font-size: 15px;
-  border: 2px dashed #1faee9;
-  border-radius: 5px;
-  background-color: #87cefa;
-  padding: 0;
-  transition: .2s;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #00bfff;
-  }
 `;

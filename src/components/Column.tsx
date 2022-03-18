@@ -3,11 +3,16 @@ import styled from 'styled-components';
 import { Task } from './Task';
 import plusIcon from '../img/plus.svg';
 
-export const Column: React.FC = () => {
+interface ColumnProps {
+  id: string;
+  title: string;
+}
+
+export const Column: React.FC<ColumnProps> = ({ id, title }) => {
   return (
-    <StyledColumn>
+    <StyledColumn id={id}>
       <StyledColumnHeader>
-        <StyledColumnTitle>Title name</StyledColumnTitle>
+        <StyledColumnTitle>{title}</StyledColumnTitle>
         <StyledColumnMenu>...</StyledColumnMenu>
       </StyledColumnHeader>
       <Task />
@@ -80,4 +85,5 @@ const StyledFooter = styled.div`
 const StyledIcon = styled.img`
   width: 16px;
   margin-right: 10px;
+  opacity: .5;
 `;

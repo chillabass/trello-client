@@ -1,11 +1,15 @@
 import React from "react";
 import styled from 'styled-components';
 
-export const BoardHeader: React.FC = () => {
+interface HeaderProps {
+  title: string;
+}
+
+export const BoardHeader: React.FC<HeaderProps> = ({ title }) => {
   return (
     <StyledBoardHeader>
       <StyledBoardItem>
-        Board Name
+        {title}
       </StyledBoardItem>
     </StyledBoardHeader>
   );
