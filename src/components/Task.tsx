@@ -1,10 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const Task: React.FC = () => {
+interface TaskProps {
+  title: string;
+  columnId: string;
+}
+
+export const Task: React.FC<TaskProps> = ({ title, columnId, }) => {
+  
+
   return (
     <StyledTask>
-      Task text
+      {title}
     </StyledTask>
   );
 }

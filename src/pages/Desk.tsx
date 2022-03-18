@@ -33,7 +33,7 @@ export const Deskpage: React.FC = () => {
   }
 
   const getTitle = (title: string | null | undefined) => {
-    dispatch(addColumns({title, deskId}));
+    if(title) dispatch(addColumns({title, deskId}));
   }
 
   return (

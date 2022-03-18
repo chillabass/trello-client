@@ -25,8 +25,7 @@ const StyledIcon = styled.img`
 `;
 
 const StyledButton = styled.button`
-  padding: 5px 10px;
-  margin: 5px;
+  margin: 10px;
   width: 150px;
   height: 80px;
   max-width: 150px;
@@ -34,7 +33,6 @@ const StyledButton = styled.button`
   border: 2px dashed #1faee9;
   border-radius: 5px;
   background-color: #87cefa;
-  padding: 0;
   transition: .2s;
   cursor: pointer;
 
