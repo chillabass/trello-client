@@ -38,7 +38,6 @@ export const userSlice: Slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchSignUp.fulfilled, (state, action: PayloadAction<{ token: string; user: IUser; }>) => {
       const { token, user } = action.payload;
-      debugger
       state.currentUser = user;
       state.token = token || '';
       state.isAuth = true;

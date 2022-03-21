@@ -20,6 +20,7 @@ export const columnSlice: Slice = createSlice({
         id: `d${Date.now()}`,
         deskId,
         title,
+        position: state.columns.length,
       };
       state.columns.push(column);
     },
