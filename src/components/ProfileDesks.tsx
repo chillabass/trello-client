@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CreateItem } from './CreateItem';
 import { addDesk } from '../store/reducers/deskReducer';
+import { fetchAddDesk } from '../store/asyncActions/deskActions';
+
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { CreateButton } from './CreateButton';
 import { FormDialog as Form } from './Form';
@@ -15,8 +17,9 @@ export const ProfileDesks: React.FC = () => {
     setFormActive(true);
   };
 
-  const getTitle = (title: string | null | undefined) => {
-    dispatch(addDesk({title,}));
+  const getTitle = (title: string) => {
+    dispatch(addDesk(title));
+    // dispatch(fetchAddDesk(title));
   }
 
   return (

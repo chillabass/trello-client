@@ -59,8 +59,8 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
 
 const StyledColumn = styled.div`
   min-height: 70px;
-  max-height: 100%;
-  min-width: 272px;
+  height: fit-content;
+  width: 272px;
   background-color: #ebecf0;
   border-radius: 5px;
   margin: 10px;

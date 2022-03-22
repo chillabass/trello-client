@@ -13,7 +13,7 @@ interface FormProps {
   dialogTitle: string;
   dialogContentText: string;
   label: string;
-  getTitle: (title: string | null | undefined) => void;
+  getTitle: (title: string) => void;
 }
 export const FormDialog: React.FC<FormProps> = ({open, setOpen, getTitle, dialogTitle, dialogContentText, label}) => {
 
@@ -24,7 +24,7 @@ export const FormDialog: React.FC<FormProps> = ({open, setOpen, getTitle, dialog
   const handleCreate = () => {
     handleClose();
     const t: HTMLInputElement | null = document.querySelector('#name');
-    getTitle(t?.value);
+    getTitle(t?.value || '');
   };
 
   return (

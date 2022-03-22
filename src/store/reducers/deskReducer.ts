@@ -14,12 +14,12 @@ export const deskSlice: Slice = createSlice({
   name: 'desk',
   initialState,
   reducers: {
-    addDesk: (state, action: PayloadAction<{ title: string; }>) => {
-      const { title } = action.payload;
+    addDesk: (state, action: PayloadAction<string>) => {
       const desk: IDesk = {
         id: `d${Date.now()}`,
-        title,
+        title: action.payload,
       };
+
       state.desks.push(desk);
     },
     editDesk: (state, action: PayloadAction<{ id: string; title: string; }>) => {
