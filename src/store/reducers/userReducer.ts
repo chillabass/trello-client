@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
 import { IUser } from '../../types/user';
-import { fetchSignIn, fetchSignUp } from '../asyncActions/userActions';
+import { fetchEditProfile, fetchSignIn, fetchSignUp } from '../asyncActions/userActions';
 import { RootState } from '../store';
 
 interface UserState {
@@ -36,6 +36,7 @@ export const userSlice: Slice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    // Sign Up
     builder.addCase(fetchSignUp.fulfilled, (state, action: PayloadAction<{ token: string; user: IUser; }>) => {
       const { token, user } = action.payload;
       state.currentUser = user;
@@ -50,6 +51,7 @@ export const userSlice: Slice = createSlice({
       state.isAuth = false;
     });
 
+    // Sign In
     builder.addCase(fetchSignIn.fulfilled, (state, action: PayloadAction<{ token: string; user: IUser; }>) => {
       const { token, user } = action.payload;
       state.currentUser = user;
@@ -64,6 +66,18 @@ export const userSlice: Slice = createSlice({
       state.currentUser = null;
       state.isAuth = false;
     });
+
+    // Edit profile data
+    builder.addCase(fetchEditProfile.fulfilled, (state, action: PayloadAction<{ user: IUser; }>) => {
+      const { user } = action.payload;
+      state.currentUser = user;
+      console.log(state.currentUser)
+      localStorage.setItem('currentUser', JSON.stringify(state.currentUser));
+    });
+    // builder.addCase(fetchSignIn.rejected, (state, action) => {
+    //   state.currentUser = null;
+    //   state.isAuth = false;
+    // });
   },
 });
 

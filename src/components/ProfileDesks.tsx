@@ -6,7 +6,7 @@ import { fetchAddDesk } from '../store/asyncActions/deskActions';
 
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { CreateButton } from './CreateButton';
-import { FormDialog as Form } from './Form';
+import { FormDialog as Form } from './CreatingForm';
 
 export const ProfileDesks: React.FC = () => {
   const [formActive, setFormActive] = useState(false);

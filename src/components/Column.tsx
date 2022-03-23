@@ -4,7 +4,7 @@ import { Task } from './Task';
 import plusIcon from '../img/plus.svg';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
-import { FormDialog as Form } from './Form';
+import { FormDialog as Form } from './CreatingForm';
 import { addTask } from '../store/reducers/taskReducer';
 
 interface ColumnProps {

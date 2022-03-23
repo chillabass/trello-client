@@ -1,18 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import { IUser } from '../types/user';
 import { useNavigate } from 'react-router';
 import { signout } from '../store/reducers/userReducer';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { EditFormDialog } from './EditProfileForm';
+import { IEditData } from '../types/editProfile';
+import { fetchEditProfile } from '../store/asyncActions/userActions';
 
 export const ProfileInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user: IUser = useAppSelector(state => state.users.currentUser);
+  const [formActive, setFormActive] = useState(false);
+
+  const getData = (data: IEditData) => {
+    console.log(data);
+    dispatch(fetchEditProfile(data));
+  }
 
   const clickEditHandler = () => {
-
+    setFormActive(true);
   };
 
   const clickSignoutHandler = () => {
@@ -41,13 +50,7 @@ export const ProfileInfo: React.FC = () => {
           gutterBottom>
           {`E-Mail: ${user.email}`}
         </StyledTypography>
-        <StyledTypography
-          variant="body1"
-          gutterBottom>
-          {`Role: ${user.role}`}
-        </StyledTypography>
         <Button
-          disabled
           color='primary'
           onClick={clickEditHandler}
           variant='contained'
@@ -60,6 +63,11 @@ export const ProfileInfo: React.FC = () => {
           variant='contained'>
           Выйти
         </Button>
+        <EditFormDialog
+            open={formActive}
+            setOpen={setFormActive}
+            getData={getData}
+        />
       </StyledInfoRight>
     </StyledContainer>
   )

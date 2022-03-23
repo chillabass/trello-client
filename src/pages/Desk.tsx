@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BoardHeader } from '../components/BoardHeader';
 import { Column } from '../components/Column';
 import { CreateButton } from '../components/CreateButton';
-import { FormDialog as Form } from '../components/Form';
+import { FormDialog as Form } from '../components/CreatingForm';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { addColumns } from '../store/reducers/columnReducer';
 import { IColumn } from '../types/column';
