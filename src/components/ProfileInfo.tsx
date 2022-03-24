@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Box, Button, Container, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Link, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import { IUser } from '../types/user';
 import { useNavigate } from 'react-router';
@@ -7,17 +7,29 @@ import { signout } from '../store/reducers/userReducer';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { EditFormDialog } from './EditProfileForm';
 import { IEditData } from '../types/editProfile';
-import { fetchEditProfile } from '../store/asyncActions/userActions';
+import { fetchChangeAvatar, fetchEditProfile } from '../store/asyncActions/userActions';
+import { FileFormDialog } from './LoadAvatar';
+import { IAvatar } from '../types/avatar';
+import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../config';
 
 export const ProfileInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user: IUser = useAppSelector(state => state.users.currentUser);
   const [formActive, setFormActive] = useState(false);
+  const [avatarActive, setAvatarActive] = useState(false);
 
   const getData = (data: IEditData) => {
     console.log(data);
     dispatch(fetchEditProfile(data));
+  }
+
+  const clickAvatarHandler = () => {
+    setAvatarActive(true)
+  }
+
+  const getAvatar = (data: IAvatar) => {
+    dispatch(fetchChangeAvatar(data));
   }
 
   const clickEditHandler = () => {
@@ -32,7 +44,15 @@ export const ProfileInfo: React.FC = () => {
   return (
     <StyledContainer>
       <StyledInfoLeft>
-        <StyledAvatar />
+        <img src={`${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/${user.avatar}`} />
+        <StyledAvatar src={`${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/${user.avatar}`}/>
+        <Button
+          color='primary'
+          onClick={clickAvatarHandler}
+          variant='contained'
+        >
+          Change Avatar
+        </Button>
       </StyledInfoLeft>
       <StyledInfoRight>
         <StyledTypography
@@ -68,6 +88,11 @@ export const ProfileInfo: React.FC = () => {
             setOpen={setFormActive}
             getData={getData}
         />
+        <FileFormDialog 
+          open={avatarActive}
+          setOpen={setAvatarActive}
+          getData={getAvatar}
+        />
       </StyledInfoRight>
     </StyledContainer>
   )
@@ -83,13 +108,25 @@ const StyledContainer = styled(Container)({
 
 const StyledInfoLeft = styled(Box)({
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
+  alignItems: 'center',
+  margin: '10px',
 });
 
 const StyledAvatar = styled(Avatar)({
   minWidth: 100,
   minHeight: 100,
   margin: '15px',
+});
+
+const StyledOFD = styled(Button)({
+  color: '#0d74ce',
+  cursor: 'pointer',
+  transition: '.2s',
+  textDecoration: 'none',
+  '&:hover': {
+    color: '#6197b6',
+  },
 });
 
 const StyledInfoRight = styled(Box)({

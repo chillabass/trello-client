@@ -2,9 +2,9 @@ import axios from 'axios';
 import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../../config';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IUserData } from '../../types/user';
-import { IEditData } from '../../types/editProfile';
+import { IAvatar } from '../../types/avatar';
 
-const GENERAL_URL = `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/users`;
+const GENERAL_URL = `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}`;
 
 const reqConfig = {
   headers: {
@@ -19,7 +19,7 @@ export const fetchSignUp = createAsyncThunk<IUserData, object>(
   async (data: object, { rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url = `${GENERAL_URL}/signup`;
+      const url = `${GENERAL_URL}/users/signup`;
       const response = await axios.post<IUserData>(url, data, reqConfig);
       return response.data;
     } catch (e: any) {
@@ -34,7 +34,7 @@ export const fetchSignIn = createAsyncThunk<IUserData, object>(
   async (data: object, { rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url = `${GENERAL_URL}/signin`;
+      const url = `${GENERAL_URL}/users/signin`;
       const response = await axios.post<IUserData>(url, data, reqConfig);
       return response.data;
     } catch (e: any) {
@@ -49,8 +49,25 @@ export const fetchEditProfile = createAsyncThunk<IUserData, object>(
   async (data: object, { rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url = `${GENERAL_URL}/edit`;
+      const url = `${GENERAL_URL}/users/edit`;
       const response = await axios.post(url, data, reqConfig);
+      return response.data;
+    } catch (e: any) {
+      alert(e.response?.data);
+      return rejectWithValue(e.response?.data);
+    }
+  }
+);
+
+export const fetchChangeAvatar = createAsyncThunk(
+  'users/fetchChangeAvatar',
+  async (data: IAvatar, { rejectWithValue }) => {
+    try {
+      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+      const url = `${GENERAL_URL}/loads/loadAvatar`;
+      const formData = new FormData();
+      formData.append('avatar', data.file, data.name);
+      const response = await axios.post(url, formData, reqConfig);
       return response.data;
     } catch (e: any) {
       alert(e.response?.data);

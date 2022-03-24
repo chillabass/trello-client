@@ -4,6 +4,7 @@ export interface IUser {
   email: string;
   fullName: string;
   role: string;
+  avatar: string;
 };
 
 export interface IUserData {

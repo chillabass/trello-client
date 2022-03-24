@@ -22,3 +22,4 @@ yarn-debug.log*
 yarn-error.log*
 
 убить процесс на порту.txt
+node_modules
