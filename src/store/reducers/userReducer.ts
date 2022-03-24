@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
 import { IUser } from '../../types/user';
-import { fetchEditProfile, fetchSignIn, fetchSignUp } from '../asyncActions/userActions';
+import { fetchChangeAvatar, fetchEditProfile, fetchSignIn, fetchSignUp } from '../asyncActions/userActions';
 import { RootState } from '../store';
 
 interface UserState {
@@ -78,6 +78,14 @@ export const userSlice: Slice = createSlice({
     //   state.currentUser = null;
     //   state.isAuth = false;
     // });
+
+    // Edit profile avatar
+    builder.addCase(fetchChangeAvatar.fulfilled, (state, action: PayloadAction<{ user: IUser; }>) => {
+      const { user } = action.payload;
+      state.currentUser = user;
+      console.log(state.currentUser)
+      localStorage.setItem('currentUser', JSON.stringify(state.currentUser));
+    });
   },
 });
 

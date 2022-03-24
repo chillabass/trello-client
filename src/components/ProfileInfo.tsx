@@ -44,7 +44,6 @@ export const ProfileInfo: React.FC = () => {
   return (
     <StyledContainer>
       <StyledInfoLeft>
-        <img src={`${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/${user.avatar}`} />
         <StyledAvatar src={`${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/${user.avatar}`}/>
         <Button
           color='primary'

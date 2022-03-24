@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../../config';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IUserData } from '../../types/user';
+import { IUser, IUserData } from '../../types/user';
 import { IAvatar } from '../../types/avatar';
 
 const GENERAL_URL = `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}`;
