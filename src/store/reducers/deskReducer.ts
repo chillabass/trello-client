@@ -1,5 +1,6 @@
 import { createSlice, Slice, PayloadAction } from '@reduxjs/toolkit';
 import { IDesk } from '../../types/desk';
+import { fetchAddDesk, fetchGetDesk } from '../asyncActions/deskActions';
 import type { RootState } from '../store';
 
 interface DeskState {
@@ -14,14 +15,14 @@ export const deskSlice: Slice = createSlice({
   name: 'desk',
   initialState,
   reducers: {
-    addDesk: (state, action: PayloadAction<string>) => {
-      const desk: IDesk = {
-        id: `d${Date.now()}`,
-        title: action.payload,
-      };
+    // addDesk: (state, action: PayloadAction<string>) => {
+    //   const desk: IDesk = {
+    //     id: `d${Date.now()}`,
+    //     title: action.payload,
+    //   };
 
-      state.desks.push(desk);
-    },
+    //   state.desks.push(desk);
+    // },
     editDesk: (state, action: PayloadAction<{ id: string; title: string; }>) => {
       const {id, title } = action.payload;
       state.desks.filter((desk: { id: string; }) => desk.id === id).title = title;
@@ -32,9 +33,19 @@ export const deskSlice: Slice = createSlice({
       state.desks.splice(index, 1);
     },
   },
+  extraReducers: (builder) => {
+    // Add desk
+    builder.addCase(fetchAddDesk.fulfilled, (state, action: PayloadAction<IDesk>) => {
+      state.desks.push(action.payload);      
+    });
+    // Get desk
+    builder.addCase(fetchGetDesk.fulfilled, (state, action: any) => {
+      // state.desks.push(action.payload);
+    })
+  }
 });
 
-export const { 
+export const {
   addDesk, 
   editDesk, 
   deleteDesk,

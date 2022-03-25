@@ -22,6 +22,11 @@ export const fetchSignUp = createAsyncThunk<IUserData, object>(
       const url = `${GENERAL_URL}/users/signup`;
       const response = await axios.post<IUserData>(url, data, reqConfig);
       return response.data;
+      // dispatch(setUser({
+      //   name: response.user.name
+        
+      // }))
+      // dispatch(setDesks(response.user.desk))
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);

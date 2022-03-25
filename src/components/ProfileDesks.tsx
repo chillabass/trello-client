@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CreateItem } from './CreateItem';
 import { addDesk } from '../store/reducers/deskReducer';
-import { fetchAddDesk } from '../store/asyncActions/deskActions';
+import { fetchAddDesk, fetchGetDesk } from '../store/asyncActions/deskActions';
 
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { CreateButton } from './CreateButton';
@@ -18,9 +18,13 @@ export const ProfileDesks: React.FC = () => {
   };
 
   const getTitle = (title: string) => {
-    dispatch(addDesk(title));
-    // dispatch(fetchAddDesk(title));
+    // dispatch(addDesk(title));
+    dispatch(fetchAddDesk(title));
   }
+
+  useEffect(() => {
+    dispatch(fetchGetDesk());
+  });
 
   return (
     <StyledContainer>

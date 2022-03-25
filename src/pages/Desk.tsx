@@ -21,7 +21,7 @@ export const Deskpage: React.FC = () => {
   // Из url получаем id доски
   const deskId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
   // По id доски получаем ее название
-  const deskTitle: string = desks.find((desk: { id: string; })=> desk.id === deskId)?.title || 'unknown';
+  const deskTitle: string = desks.find((desk: { id: number; })=> desk.id === +deskId)?.title || 'unknown';
   
   // Получаем массив всех колонок
   const allColumns: IColumn[] = useAppSelector(state => state.columns.columns);

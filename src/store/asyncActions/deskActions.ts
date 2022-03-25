@@ -18,15 +18,12 @@ export const fetchAddDesk = createAsyncThunk<IDesk, string>(
   'desks/fetchAddDesk',
   async (data: string, { rejectWithValue }) => {
     try {
-      debugger;
-      console.log()
       const url: string = `${GENERAL_URL}/add`;
-      const desk: IDesk = {
-        id: `d${Date.now()}`,
+      const desk: object = {
         title: data,
       };
-      const response = await axios.post<IDesk>(url, desk, reqConfig);
-      return response.data;
+      const response = await axios.post<{message: string; desk: IDesk}>(url, desk, reqConfig);
+      return response.data.desk;
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -58,6 +55,21 @@ export const fetchDeleteDesk = createAsyncThunk<IDesk, object>(
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
+    }
+  }
+);
+
+export const fetchGetDesk = createAsyncThunk(
+  'desks/fetchGetDesk',
+  async () => {
+    try {
+      const url: string = `${GENERAL_URL}/get`;
+      const response = await axios.get<{desks: IDesk[]}>(url, reqConfig);
+      console.log(response.data.desks);
+      return response.data.desks;
+    } catch (e: any) {
+      console.log(e.response?.data);
+      // return rejectWithValue(e.response?.data);
     }
   }
 );

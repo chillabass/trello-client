@@ -1,4 +1,4 @@
 export interface IDesk {
-  id: string;
+  id: number;
   title: string;
 };
