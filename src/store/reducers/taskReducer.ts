@@ -15,16 +15,14 @@ export const taskSlice: Slice = createSlice({
   name: 'task',
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<{ columnId: string; title: string; }>) => {
-      const { columnId, title } = action.payload;
-      const task: ITask = {
-        id: `t${Date.now()}`,
-        columnId,
-        title,
-        position: state.tasks.length,
-        priority: 1,
-      };
-      state.tasks.push(task);
+    setOneTask: (state, action: PayloadAction<ITask>) => {
+      state.tasks.push(action.payload);
+    },
+    setTasks: (state, action: PayloadAction<ITask[]>) => {
+      state.tasks = action.payload;
+    },
+    resetTasks: (state) => {
+      state.tasks = null;
     },
     editTask: (state, action: PayloadAction<{ id: string; title: string; }>) => {
       const {id, title} = action.payload;
@@ -42,8 +40,11 @@ export const {
   addTask, 
   editTask, 
   deleteTask,
+  setOneTask,
+  setTasks,
+  resetTasks,
 } = taskSlice.actions;
 
-export const selectTasks = (state: RootState) => state.tasks.tasks;
+export const getTasks = (state: RootState) => state.tasks.tasks;
 
 export default taskSlice.reducer;

@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Container, Link, Typography } from '@mui/material'
 import { styled } from '@mui/styles';
 import { IUser } from '../types/user';
 import { useNavigate } from 'react-router';
-import { signout } from '../store/reducers/userReducer';
+import { getUser, signout } from '../store/reducers/userReducer';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { EditFormDialog } from './EditProfileForm';
 import { IEditData } from '../types/editProfile';
@@ -15,7 +15,7 @@ import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../config';
 export const ProfileInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const user: IUser = useAppSelector(state => state.users.currentUser);
+  const user: IUser = useAppSelector(getUser);
   const [formActive, setFormActive] = useState(false);
   const [avatarActive, setAvatarActive] = useState(false);
 

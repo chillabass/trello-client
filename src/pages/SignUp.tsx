@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
 import validator from 'validator';
 import { fetchSignUp } from '../store/asyncActions/userActions';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { Navigate } from 'react-router';
+import { getAuth } from '../store/reducers/userReducer';
 
 interface UserData {
   [login: string]: string;
@@ -15,7 +17,8 @@ interface UserData {
 
 export const Signuppage: React.FC = () => {
   const dispatch = useAppDispatch();
-
+  const isAuth = useAppSelector(getAuth);
+  
   const formRef = useRef<HTMLFormElement>(null);
 
   const isValidData = (userData: UserData): boolean => {
@@ -67,6 +70,7 @@ export const Signuppage: React.FC = () => {
   }
 
   return (
+    isAuth ? <Navigate to='/profile' /> :
     <StyledSignup>
       <StyledTitle>Registration</StyledTitle>
       <StyledForm

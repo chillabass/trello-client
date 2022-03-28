@@ -14,15 +14,14 @@ export const columnSlice: Slice = createSlice({
   name: 'column',
   initialState,
   reducers: {
-    addColumns: (state, action: PayloadAction<{ deskId: string; title: string; }>) => {
-      const { deskId, title } = action.payload;
-      const column: IColumn = {
-        id: `d${Date.now()}`,
-        deskId,
-        title,
-        position: state.columns.length,
-      };
-      state.columns.push(column);
+    setOneColumn: (state, action: PayloadAction<IColumn>) => {
+      state.columns.push(action.payload);
+    },
+    setColumns: (state, action: PayloadAction<IColumn[]>) => {
+      state.columns = action.payload;
+    },
+    resetColumns: (state) => {
+      state.columns = null;
     },
     editColumns: (state, action: PayloadAction<{ id: string; title: string; }>) => {
       const { id, title } = action.payload;
@@ -40,8 +39,11 @@ export const {
   addColumns, 
   editColumns, 
   deleteColumns,
+  setColumns,
+  setOneColumn,
+  resetColumns,
 } = columnSlice.actions;
 
-export const selectColumns = (state: RootState) => state.columns.columns;
+export const getColumns = (state: RootState) => state.columns.columns;
 
 export default columnSlice.reducer;

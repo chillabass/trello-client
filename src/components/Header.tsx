@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../config';
 import { useAppSelector } from '../store/hooks';
-import { store } from '../store/store';
-import { IUserData } from '../types/user';
+import { getAuth, getUser } from '../store/reducers/userReducer';
+import Avatar from '@mui/material/Avatar';
+import styled from 'styled-components';
 
 export const Header: React.FC = () => {
-  const isAuth = useAppSelector(state => state.users.isAuth);
-  const user = useAppSelector(state => state.users.currentUser);
+  const isAuth = useAppSelector(getAuth);
+  const user = useAppSelector(getUser);
 
   return (
     <StyledHeader>
@@ -16,9 +16,7 @@ export const Header: React.FC = () => {
       <StyledProfileBlock>
         {isAuth ?
           <StyledProfile to='/profile'>
-            <StyledAvatar 
-              url={`${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/${user.avatar}`}
-            />
+            <Avatar src={user.avatar ? `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/${user.avatar}` : ''} />
           </StyledProfile> :
           <>
             <StyledButton to='/signup'>Sign Up</StyledButton>
@@ -58,14 +56,6 @@ const StyledProfile = styled(Link)`
   border-radius: 50%;
   background-color: #ff9926;
   cursor: pointer;
-`;
-
-const StyledAvatar = styled.img<{ url: string; }>`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-image: url(${props => props.url});
-  background-size: contain;
 `;
 
 const StyledButton = styled(Link)`

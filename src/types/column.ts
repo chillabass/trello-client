@@ -1,6 +1,6 @@
 export interface IColumn {
   id: string;
-  deskId: string;
+  deskId: number;
   title: string;
   position: number;
 };

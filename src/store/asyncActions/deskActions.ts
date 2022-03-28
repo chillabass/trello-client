@@ -3,6 +3,7 @@ import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../../config';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 // import { IUserData } from '../../types/user';
 import { IDesk } from '../../types/desk';
+import { setOneDesk } from '../reducers/deskReducer';
 
 const GENERAL_URL = `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/desks`;
 
@@ -14,16 +15,17 @@ const reqConfig = {
   }
 };
 
-export const fetchAddDesk = createAsyncThunk<IDesk, string>(
+export const fetchAddDesk = createAsyncThunk(
   'desks/fetchAddDesk',
-  async (data: string, { rejectWithValue }) => {
+  async (data: string, { dispatch, rejectWithValue }) => {
     try {
+      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
       const url: string = `${GENERAL_URL}/add`;
       const desk: object = {
         title: data,
       };
       const response = await axios.post<{message: string; desk: IDesk}>(url, desk, reqConfig);
-      return response.data.desk;
+      dispatch(setOneDesk(response.data.desk));
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -61,7 +63,7 @@ export const fetchDeleteDesk = createAsyncThunk<IDesk, object>(
 
 export const fetchGetDesk = createAsyncThunk(
   'desks/fetchGetDesk',
-  async () => {
+  async (_: void, { rejectWithValue }) => {
     try {
       const url: string = `${GENERAL_URL}/get`;
       const response = await axios.get<{desks: IDesk[]}>(url, reqConfig);
@@ -69,7 +71,7 @@ export const fetchGetDesk = createAsyncThunk(
       return response.data.desks;
     } catch (e: any) {
       console.log(e.response?.data);
-      // return rejectWithValue(e.response?.data);
+      return rejectWithValue(e.response?.data);
     }
   }
 );

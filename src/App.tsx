@@ -2,6 +2,9 @@ import React, { createContext, useContext, useEffect } from 'react';
 import './App.css';
 import { Header } from './components/Header';
 import { Routes, Route, Navigate, RouteProps } from 'react-router-dom';
+import { PrivateRoute } from './hoc/PrivateRouter';
+import { useAppDispatch } from './store/hooks';
+import { fetchGetUser } from './store/asyncActions/userActions';
 
 import { Mainpage } from './pages/Main';
 import { Signuppage } from './pages/SignUp';
@@ -9,9 +12,14 @@ import { Signinpage } from './pages/SignIn';
 import { NotFoundpage } from './pages/NotFound';
 import { Profilepage } from './pages/Profile';
 import { Deskpage } from './pages/Desk';
-import { PrivateRoute } from './hoc/PrivateRouter';
 
 export const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchGetUser());
+  });
+
   return (
   <>
     <Header />

@@ -1,8 +1,10 @@
 import React, { SyntheticEvent } from 'react';
+import { Navigate } from 'react-router';
 import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
 import { fetchSignIn } from '../store/asyncActions/userActions';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { getAuth } from '../store/reducers/userReducer';
 
 interface UserData {
   login: string;
@@ -11,6 +13,7 @@ interface UserData {
 
 export const Signinpage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(getAuth);
 
   const onSubmitHandler = (event: SyntheticEvent): void => {
     event.preventDefault();
@@ -26,6 +29,7 @@ export const Signinpage: React.FC = () => {
   }
 
   return (
+    isAuth ? <Navigate to='/profile' /> :
   <StyledSignup>
     <StyledTitle>Authentication</StyledTitle>
     <StyledForm onSubmit={onSubmitHandler}>

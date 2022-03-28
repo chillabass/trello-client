@@ -25,6 +25,7 @@ const StyledIcon = styled.img`
 `;
 
 const StyledButton = styled.button`
+  flex-shrink: 0;
   margin: 10px;
   width: 150px;
   height: 80px;

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Task } from './Task';
 import plusIcon from '../img/plus.svg';
+import { Task } from './Task';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
 import { FormDialog as Form } from './CreatingForm';
-import { addTask } from '../store/reducers/taskReducer';
+import { fetchAddTask } from '../store/asyncActions/taskAction';
+import { getTasks } from '../store/reducers/taskReducer';
 
 interface ColumnProps {
   id: string;
@@ -17,16 +18,16 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
 
   const [formActive, setFormActive] = useState(false);
 
-  const allTasks: ITask[] = useAppSelector(state => state.tasks.tasks);
-  const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === id);
+  const allTasks: ITask[] = useAppSelector(getTasks);
+  const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === +id);
 
   const addTaskHandler = () => {
     setFormActive(true);
   }
 
   const getTitle = (title: string | null | undefined) => {
-    const columnId = id;
-    if(title) dispatch(addTask({ title, columnId, }));
+    const columnId = +id;
+    if(title) dispatch(fetchAddTask({ title, columnId, }));
   }
 
   return (
@@ -68,6 +69,7 @@ const StyledColumn = styled.div`
   flex-direction: column;
   padding: 10px;
   box-shadow: 0px 3px 12px 1px #8b8b8b;
+  flex-shrink: 0;
 `;
 
 const StyledColumnHeader = styled.div`
@@ -109,7 +111,7 @@ const StyledFooter = styled.button`
   cursor: pointer;
   
   &:hover {
-    box-shadow: 0px 1px 6px -1px #0055ff;
+    box-shadow: 0px 1px 6px -1px #0068a2;
   }
 `;
 
