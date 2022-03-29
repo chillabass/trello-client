@@ -24,8 +24,8 @@ export const EditFormDialog: React.FC<FormProps> = ({open, setOpen, getData, }) 
     const nameInput: HTMLInputElement | null = document.querySelector('#fullName');
     const passInput: HTMLInputElement | null = document.querySelector('#password');
     let data: IEditData = {};
-    if (nameInput?.value) data.fullName = nameInput?.value;
-    if (passInput?.value) data.password = passInput?.value;
+    if (nameInput?.value.trim()) data.fullName = nameInput?.value.trim();
+    if (passInput?.value.trim()) data.password = passInput?.value.trim();
     getData(data);
   };
 

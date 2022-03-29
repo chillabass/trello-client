@@ -15,7 +15,7 @@ interface FormProps {
   label: string;
   getTitle: (title: string) => void;
 }
-export const FormDialog: React.FC<FormProps> = ({open, setOpen, getTitle, dialogTitle, dialogContentText, label}) => {
+export const FormDialog: React.FC<FormProps> = ({ open, setOpen, getTitle, dialogTitle, dialogContentText, label }) => {
 
   const handleClose = () => {
     setOpen(false);
@@ -28,28 +28,26 @@ export const FormDialog: React.FC<FormProps> = ({open, setOpen, getTitle, dialog
   };
 
   return (
-    <div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {dialogContentText}
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label={label}
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleCreate}>Create</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>{dialogTitle}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          {dialogContentText}
+        </DialogContentText>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label={label}
+          type="text"
+          fullWidth
+          variant="standard"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleCreate}>Create</Button>
+      </DialogActions>
+    </Dialog>
   );
 };

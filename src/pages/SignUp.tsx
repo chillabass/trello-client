@@ -5,7 +5,7 @@ import validator from 'validator';
 import { fetchSignUp } from '../store/asyncActions/userActions';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { Navigate } from 'react-router';
-import { getAuth } from '../store/reducers/userReducer';
+import { getAuth } from '../store/slicers/userSlicer';
 
 interface UserData {
   [login: string]: string;

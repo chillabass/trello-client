@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CreateItem } from './CreateItem';
-import { addDesk } from '../store/reducers/deskReducer';
+import { addDesk } from '../store/slicers/deskSlicer';
 import { fetchAddDesk } from '../store/asyncActions/deskActions';
 
 import { useAppSelector, useAppDispatch } from '../store/hooks';

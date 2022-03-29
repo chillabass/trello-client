@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import columnReducer from './reducers/columnReducer';
-import deskReducer from './reducers/deskReducer';
-import taskReducer from './reducers/taskReducer';
-import userReducer from './reducers/userReducer';
+import columnReducer from './slicers/columnSlicer';
+import deskReducer from './slicers/deskSlicer';
+import taskReducer from './slicers/taskSlicer';
+import userReducer from './slicers/userSlicer';
 
 export const store = configureStore({
   reducer: {

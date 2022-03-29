@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FormItem } from '../components/FormItem';
 import { fetchSignIn } from '../store/asyncActions/userActions';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { getAuth } from '../store/reducers/userReducer';
+import { getAuth } from '../store/slicers/userSlicer';
 
 interface UserData {
   login: string;

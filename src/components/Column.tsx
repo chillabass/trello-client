@@ -6,10 +6,11 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
 import { FormDialog as Form } from './CreatingForm';
 import { fetchAddTask } from '../store/asyncActions/taskAction';
-import { getTasks } from '../store/reducers/taskReducer';
+import { getTasks } from '../store/slicers/taskSlicer';
+import { ColumnsEditForm } from './ColumnEditForm';
 
 interface ColumnProps {
-  id: string;
+  id: number;
   title: string;
 }
 
@@ -17,29 +18,35 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
   const dispatch = useAppDispatch();
 
   const [formActive, setFormActive] = useState(false);
+  const [editFormActive, setEditFormActive] = useState(false);
 
   const allTasks: ITask[] = useAppSelector(getTasks);
-  const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === +id);
+  const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === id);
 
   const addTaskHandler = () => {
     setFormActive(true);
   }
 
+  const editHandler = () => {
+    setEditFormActive(true);
+  }
+
   const getTitle = (title: string | null | undefined) => {
-    const columnId = +id;
-    if(title) dispatch(fetchAddTask({ title, columnId, }));
+    const columnId = id;
+    if (title) dispatch(fetchAddTask({ title, columnId, }));
   }
 
   return (
-    <StyledColumn id={id}>
+    <StyledColumn>
       <StyledColumnHeader>
         <StyledColumnTitle>{title}</StyledColumnTitle>
-        <StyledColumnMenu>...</StyledColumnMenu>
+        <StyledColumnMenu onClick={editHandler}>...</StyledColumnMenu>
       </StyledColumnHeader>
         {
-        tasks.map((task: ITask) => <Task 
+        tasks.sort((ltask, rtask) => ltask.position - rtask.position).map((task: ITask) => <Task 
+          taskId={task.id}
           title={task.title}
-          columnId={id}
+          columnId={+id}
         />)
         }
       <StyledFooter onClick={addTaskHandler}>
@@ -53,6 +60,11 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
         dialogContentText='Enter task desription'
         label='Task'
         getTitle={getTitle}
+      />
+      <ColumnsEditForm 
+        columnId={id}
+        open={editFormActive}
+        setOpen={setEditFormActive}
       />
     </StyledColumn>
   );

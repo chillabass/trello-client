@@ -3,14 +3,14 @@ import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../../config';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IUser, IUserData } from '../../types/user';
 import { IAvatar } from '../../types/avatar';
-import { getToken, setIsAuth, setToken, setUser } from '../reducers/userReducer';
-import { resetDesks, setDesks } from '../reducers/deskReducer';
+import { getToken, setIsAuth, setToken, setUser } from '../slicers/userSlicer';
+import { resetDesks, setDesks } from '../slicers/deskSlicer';
 import { IDesk } from '../../types/desk';
 import { useAppSelector } from '../hooks';
 import { IColumn } from '../../types/column';
-import { resetColumns, setColumns } from '../reducers/columnReducer';
+import { resetColumns, setColumns } from '../slicers/columnSlicer';
 import { ITask } from '../../types/task';
-import { resetTasks, setTasks } from '../reducers/taskReducer';
+import { resetTasks, setTasks } from '../slicers/taskSlicer';
 
 const GENERAL_URL = `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}`;
 

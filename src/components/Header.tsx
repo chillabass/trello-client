@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../config';
 import { useAppSelector } from '../store/hooks';
-import { getAuth, getUser } from '../store/reducers/userReducer';
+import { getAuth, getUser } from '../store/slicers/userSlicer';
 import Avatar from '@mui/material/Avatar';
 import styled from 'styled-components';
 

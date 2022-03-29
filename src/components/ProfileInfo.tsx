@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Container, Link, Typography } from '@mui/material'
 import { styled } from '@mui/styles';
 import { IUser } from '../types/user';
 import { useNavigate } from 'react-router';
-import { getUser, signout } from '../store/reducers/userReducer';
+import { getUser, signout } from '../store/slicers/userSlicer';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { EditFormDialog } from './EditProfileForm';
 import { IEditData } from '../types/editProfile';

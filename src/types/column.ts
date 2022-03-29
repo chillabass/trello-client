@@ -1,5 +1,5 @@
 export interface IColumn {
-  id: string;
+  id: number;
   deskId: number;
   title: string;
   position: number;
