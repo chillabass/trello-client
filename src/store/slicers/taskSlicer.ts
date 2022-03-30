@@ -29,6 +29,7 @@ export const taskSlice: Slice = createSlice({
       state.tasks.map((task: ITask) => {
         if (task.id === updatedTask.id) {
           task.title = updatedTask.title;
+          task.description = updatedTask.description;
           task.columnId = updatedTask.columnId;
           task.position = updatedTask.position;
           task.priority = updatedTask.priority;

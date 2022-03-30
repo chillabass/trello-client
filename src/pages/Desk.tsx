@@ -12,10 +12,6 @@ import { IColumn } from '../types/column';
 import { IDesk } from '../types/desk';
 import { getColumns } from '../store/slicers/columnSlicer';
 
-interface OverlayProps {
-  isActive: boolean;
-};
-
 export const Deskpage: React.FC = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -38,7 +34,7 @@ export const Deskpage: React.FC = () => {
     setFormActive(true);
   }
 
-  const getTitle = (title: string | null | undefined) => {
+  const getData = (title: string | null | undefined) => {
     if (title) dispatch(fetchAddColumn({ title, deskId }));
   }
 
@@ -59,7 +55,7 @@ export const Deskpage: React.FC = () => {
           dialogTitle='List name'
           dialogContentText='Enter list name'
           label='List name'
-          getTitle={getTitle}
+          getData={getData}
         />
       </StyledColumnsWrapper>
     </>
@@ -71,3 +67,4 @@ const StyledColumnsWrapper = styled.div`
   display: flex;
   overflow-x: auto;
 `;
+

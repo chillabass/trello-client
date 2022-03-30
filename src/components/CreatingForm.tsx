@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material/';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -13,18 +13,19 @@ interface FormProps {
   dialogTitle: string;
   dialogContentText: string;
   label: string;
-  getTitle: (title: string) => void;
+  getData: (title: string) => void;
 }
-export const FormDialog: React.FC<FormProps> = ({ open, setOpen, getTitle, dialogTitle, dialogContentText, label }) => {
 
+export const FormDialog: React.FC<FormProps> = ({ open, setOpen, getData, dialogTitle, dialogContentText, label }) => {
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleCreate = () => {
-    handleClose();
-    const t: HTMLInputElement | null = document.querySelector('#name');
-    getTitle(t?.value || '');
+    setOpen(false);
+    const taskTitle: HTMLInputElement | null = document.querySelector('#taskTitle');
+    const title = taskTitle?.value.trim() || '';
+    getData(title);
   };
 
   return (
@@ -37,7 +38,7 @@ export const FormDialog: React.FC<FormProps> = ({ open, setOpen, getTitle, dialo
         <TextField
           autoFocus
           margin="dense"
-          id="name"
+          id="taskTitle"
           label={label}
           type="text"
           fullWidth

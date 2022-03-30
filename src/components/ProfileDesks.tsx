@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CreateItem } from './CreateItem';
-import { addDesk } from '../store/slicers/deskSlicer';
 import { fetchAddDesk } from '../store/asyncActions/deskActions';
 
 import { useAppSelector, useAppDispatch } from '../store/hooks';
@@ -18,8 +17,7 @@ export const ProfileDesks: React.FC = () => {
   };
 
   const getTitle = (title: string) => {
-    // dispatch(addDesk(title));
-    dispatch(fetchAddDesk(title));
+    if (title) dispatch(fetchAddDesk(title));
   }
 
   return (
@@ -42,7 +40,7 @@ export const ProfileDesks: React.FC = () => {
       dialogTitle='Desk name'
       dialogContentText='Enter desk name'
       label='Desk name'
-      getTitle={getTitle}
+      getData={getTitle}
     />
     </StyledContainer>
   );

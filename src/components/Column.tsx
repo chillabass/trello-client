@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import plusIcon from '../img/plus.svg';
+import editIcon from '../img/edit.svg';
 import { Task } from './Task';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
-import { FormDialog as Form } from './CreatingForm';
+import { TaskCreateForm } from './TaskCreateForm';
 import { fetchAddTask } from '../store/asyncActions/taskAction';
 import { getTasks } from '../store/slicers/taskSlicer';
 import { ColumnsEditForm } from './ColumnEditForm';
@@ -31,35 +32,38 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
     setEditFormActive(true);
   }
 
-  const getTitle = (title: string | null | undefined) => {
+  const getData = (title: string, priority: number) => {
     const columnId = id;
-    if (title) dispatch(fetchAddTask({ title, columnId, }));
+    if (title) dispatch(fetchAddTask({ title, columnId, priority}));
   }
 
   return (
     <StyledColumn>
       <StyledColumnHeader>
         <StyledColumnTitle>{title}</StyledColumnTitle>
-        <StyledColumnMenu onClick={editHandler}>...</StyledColumnMenu>
+        <StyledColumnMenu onClick={editHandler} />
       </StyledColumnHeader>
         {
-        tasks.sort((ltask, rtask) => ltask.position - rtask.position).map((task: ITask) => <Task 
-          taskId={task.id}
-          title={task.title}
-          columnId={+id}
-        />)
+        tasks.sort((ltask, rtask) => ltask.position - rtask.position).map((task: ITask) => 
+          <Task
+            taskId={task.id}
+            title={task.title}
+            columnId={+id}
+            priority={task.priority}
+            description={task.description}
+          />)
         }
       <StyledFooter onClick={addTaskHandler}>
         <StyledIcon src={plusIcon} alt="add_icon" />
         <p>Add to card</p>
       </StyledFooter>
-      <Form 
+      <TaskCreateForm 
         open={formActive} 
         setOpen={setFormActive}
         dialogTitle='New task'
         dialogContentText='Enter task desription'
         label='Task'
-        getTitle={getTitle}
+        getData={getData}
       />
       <ColumnsEditForm 
         columnId={id}
@@ -103,6 +107,10 @@ const StyledColumnMenu = styled.div`
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
+  background-image: url(${editIcon});
+  background-size: 15px;
+  background-repeat: no-repeat;
+  background-position: center;
 
   &:hover {
     background-color: rgb(200, 200, 200);

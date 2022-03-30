@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -24,18 +24,19 @@ export const DeskEditForm: React.FC<FormProps> = ({open, setOpen, id}) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
-    handleClose();
+    setOpen(false);
     dispatch(fetchDeleteDesk({ id }));
   };
 
-  const handleClose = () => {
+  const handleClose = (e: SyntheticEvent) => {
+    e.preventDefault();
     setOpen(false);
   };
 
   const handleEdit = () => {
-    handleClose();
+    setOpen(false);
     const deskTitle: HTMLInputElement | null = document.querySelector('#deskTitle');
-    const data: IEditDesk = { 
+    const data = { 
       id,
       title: deskTitle?.value.trim(),
     };

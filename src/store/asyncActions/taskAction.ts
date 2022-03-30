@@ -16,7 +16,7 @@ const reqConfig = {
 
 export const fetchAddTask = createAsyncThunk(
   'tasks/fetchAddTask',
-  async (data: { columnId: number; title: string; }, { dispatch, rejectWithValue }) => {
+  async (data: { columnId: number; title: string; priority: number;}, { dispatch, rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
       const url: string = `${GENERAL_URL}/add`;
@@ -31,7 +31,7 @@ export const fetchAddTask = createAsyncThunk(
 
 export const fetchEditTask = createAsyncThunk(
   'tasks/fetchEditTask',
-  async (data: { id: number; columnId?: number; title?: string; proirity?: number; position?: number; }, { dispatch, rejectWithValue }) => {
+  async (data: { id: number; columnId?: number; title?: string; proirity?: number; position?: number; descript?: string; }, { dispatch, rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
       const url: string = `${GENERAL_URL}/edit`;

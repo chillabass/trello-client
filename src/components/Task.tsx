@@ -6,14 +6,16 @@ import { TaskEditForm } from './TaskEditForm';
 interface TaskProps {
   taskId: number;
   title: string;
+  description: string;
   columnId: number;
+  priority: number;
 };
 
 interface OverlayProps {
   isActive: boolean;
 };
 
-export const Task: React.FC<TaskProps> = ({ title, columnId, taskId }) => {
+export const Task: React.FC<TaskProps> = ({ title, columnId, taskId, priority, description }) => {
   const [active, setActive] = useState(false);
   const [taskEditActive, setTaskEditActive] = useState(false);
 
@@ -29,9 +31,19 @@ export const Task: React.FC<TaskProps> = ({ title, columnId, taskId }) => {
     setTaskEditActive(true);
   }
 
+  type ColorType = {[key: number]: string;}
+  const Colors: ColorType = {
+    1: 'initial;',
+    2: '#6bda21;',
+    3: '#e7e432;',
+    4: '#e7772c;',
+    5: '#f90000;',
+  };
+
   return (
     <>
       <StyledTask
+        color={Colors[priority]}
         onMouseOver={onMouseOverHandler}
         onMouseOut={onMouseOutHandler}
       >
@@ -39,25 +51,33 @@ export const Task: React.FC<TaskProps> = ({ title, columnId, taskId }) => {
           isActive={active}
           onClick={onClickHandler}
         />
-        {title}
+        <StyledP>{title}</StyledP>
       <TaskEditForm 
         open={taskEditActive}
         setOpen={setTaskEditActive}
         taskId={taskId}
+        priority={priority}
+        title={title}
+        description={description}
       />
       </StyledTask>
     </>
   );
 };
 
-const StyledTask = styled.div`
-position: relative;
+const StyledTask = styled.div<{color: string;}>`
+  position: relative;
   padding: 5px;
   margin: 5px 0;
+  background-color: ${props => props.color};
   border-radius: 3px;
-  word-wrap: break-word;
   box-shadow: 0px 1px 6px -1px #444;
   cursor: pointer;
+`;
+
+const StyledP = styled.p`
+  word-wrap: break-word;
+  padding-right: 15px;
 `;
 
 const StyledOverlay = styled.div<OverlayProps>`

@@ -123,7 +123,7 @@ export const fetchGetUser = createAsyncThunk(
       dispatch(setColumns(columns));
       dispatch(setTasks(tasks));
     } catch (e: any) {
-      alert(e.response?.data);
+      // alert(e.response?.data);
       return rejectWithValue(e.response?.data);
     }
   }
