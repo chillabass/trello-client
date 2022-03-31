@@ -43,6 +43,9 @@ export const FormDialog: React.FC<FormProps> = ({ open, setOpen, getData, dialog
           type="text"
           fullWidth
           variant="standard"
+          inputProps={{
+            maxLength: 255,
+          }}
         />
       </DialogContent>
       <DialogActions>

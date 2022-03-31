@@ -49,6 +49,9 @@ export const TaskCreateForm: React.FC<FormProps> = ({ open, setOpen, getData, di
           type="text"
           fullWidth
           variant="standard"
+          inputProps={{
+            maxLength: 255,
+          }}
         />
         <Typography 
             sx={{marginTop: '19px;'}}

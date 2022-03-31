@@ -6,9 +6,12 @@ import { Task } from './Task';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
 import { TaskCreateForm } from './TaskCreateForm';
-import { fetchAddTask } from '../store/asyncActions/taskAction';
+import { fetchAddTask, fetchEditTask, fetchMoveTask } from '../store/asyncActions/taskAction';
 import { getTasks } from '../store/slicers/taskSlicer';
 import { ColumnsEditForm } from './ColumnEditForm';
+import { Container, Draggable, DropResult } from 'react-smooth-dnd';
+import { getColumns } from '../store/slicers/columnSlicer';
+import { IColumn } from '../types/column';
 
 interface ColumnProps {
   id: number;
@@ -26,46 +29,90 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
 
   const addTaskHandler = () => {
     setFormActive(true);
-  }
+  };
 
   const editHandler = () => {
     setEditFormActive(true);
-  }
+  };
 
   const getData = (title: string, priority: number) => {
     const columnId = id;
-    if (title) dispatch(fetchAddTask({ title, columnId, priority}));
+    if (title) dispatch(fetchAddTask({ title, columnId, priority }));
+  };
+
+  const onTaskDrop = (columnId: number, dropResult: DropResult) => {
+    console.log('onTaskDrop:', dropResult);
+    if (dropResult.removedIndex !== null && dropResult.addedIndex !== null) {
+      console.log(columnId)
+      
+      // dispatch(fetchMoveTask({
+      //   id: dropResult.payload.id,
+      //   columnId,
+      //   addedIndex: dropResult.addedIndex,
+      //   removedIndex: dropResult.removedIndex,
+      // }));
+    }
+  };
+
+  const getTaskPayload = (id: number, index: number) => {
+    return tasks.filter(task => task.columnId === id)[index];
   }
 
   return (
     <StyledColumn>
       <StyledColumnHeader>
-        <StyledColumnTitle>{title}</StyledColumnTitle>
+        <StyledColumnTitle className='column-drag-handle'>{title}</StyledColumnTitle>
         <StyledColumnMenu onClick={editHandler} />
       </StyledColumnHeader>
+      <Container
+        groupName="col"
+        onDragStart={e => console.log("drag started", e)}
+        onDragEnd={e => console.log("drag end", e)}
+        onDrop={e => onTaskDrop(id, e)}
+        getChildPayload={index => getTaskPayload(id, index)}
+        dragClass="card-ghost"
+        dropClass="card-ghost-drop"
+        onDragEnter={() => {
+          console.log("drag enter:", id);
+        }}
+        onDragLeave={() => {
+          console.log("drag leave:", id);
+        }}
+        onDropReady={p => console.log('Drop ready: ', p)}
+        dropPlaceholder={{
+          animationDuration: 150,
+          showOnTop: true,
+          className: 'drop-preview'
+        }}
+      >
         {
-        tasks.sort((ltask, rtask) => ltask.position - rtask.position).map((task: ITask) => 
-          <Task
-            taskId={task.id}
-            title={task.title}
-            columnId={+id}
-            priority={task.priority}
-            description={task.description}
-          />)
+          tasks.sort((lTask, rTask) => lTask.position - rTask.position).map((task: ITask) => {
+            return (
+              <Draggable key={task.id}>
+                <Task
+                  taskId={task.id}
+                  title={task.title}
+                  columnId={+id}
+                  priority={task.priority}
+                  description={task.description}
+                />
+              </Draggable>);
+          })
         }
+      </Container>
       <StyledFooter onClick={addTaskHandler}>
         <StyledIcon src={plusIcon} alt="add_icon" />
         <p>Add to card</p>
       </StyledFooter>
-      <TaskCreateForm 
-        open={formActive} 
+      <TaskCreateForm
+        open={formActive}
         setOpen={setFormActive}
         dialogTitle='New task'
         dialogContentText='Enter task desription'
         label='Task'
         getData={getData}
       />
-      <ColumnsEditForm 
+      <ColumnsEditForm
         columnId={id}
         open={editFormActive}
         setOpen={setEditFormActive}

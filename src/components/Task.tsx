@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Draggable } from 'react-smooth-dnd';
 import styled from 'styled-components';
 import editIcon from '../img/edit.svg';
 import { TaskEditForm } from './TaskEditForm';
@@ -41,7 +42,7 @@ export const Task: React.FC<TaskProps> = ({ title, columnId, taskId, priority, d
   };
 
   return (
-    <>
+    
       <StyledTask
         color={Colors[priority]}
         onMouseOver={onMouseOverHandler}
@@ -61,7 +62,6 @@ export const Task: React.FC<TaskProps> = ({ title, columnId, taskId, priority, d
         description={description}
       />
       </StyledTask>
-    </>
   );
 };
 

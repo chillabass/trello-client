@@ -44,7 +44,6 @@ export const fetchEditTask = createAsyncThunk(
   }
 );
 
-
 export const fetchDeleteTask = createAsyncThunk(
   'tasks/fetchDeleteTask',
   async (data: {id: number}, { dispatch, rejectWithValue }) => {
@@ -53,6 +52,20 @@ export const fetchDeleteTask = createAsyncThunk(
       const url: string = `${GENERAL_URL}/delete`;
       const response = await axios.post<{message: string; deleted: boolean; id: number}>(url, data, reqConfig);
       if (response.data.deleted) dispatch(deleteTask(response.data.id));
+    } catch (e: any) {
+      alert(e.response?.data);
+      return rejectWithValue(e.response?.data);
+    }
+  }
+);
+
+export const fetchMoveTask = createAsyncThunk(
+  'tasks/fetchMoveTask',
+  async (data: {id: number, columnId: number, removedIndex: number, addedIndex: number}, { dispatch, rejectWithValue }) => {
+    try {
+      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+      const url: string = `${GENERAL_URL}/move`;
+      const response = await axios.post<{message: string; }>(url, data, reqConfig);
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);

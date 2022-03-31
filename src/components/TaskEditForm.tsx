@@ -66,6 +66,9 @@ export const TaskEditForm: React.FC<FormProps> = ({open, setOpen, taskId, priori
             fullWidth
             defaultValue={title}
             variant="standard"
+            inputProps={{
+              maxLength: 255,
+            }}
           />
           <TextField
             sx={{marginTop: '19px;'}}
@@ -76,6 +79,9 @@ export const TaskEditForm: React.FC<FormProps> = ({open, setOpen, taskId, priori
             fullWidth
             defaultValue={description}
             variant="standard"
+            inputProps={{
+              maxLength: 255,
+            }}
           />
           <Typography 
             sx={{marginTop: '19px;'}}
