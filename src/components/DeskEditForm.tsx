@@ -23,7 +23,8 @@ interface IEditDesk {
 export const DeskEditForm: React.FC<FormProps> = ({open, setOpen, id}) => {
   const dispatch = useAppDispatch();
 
-  const handleDelete = () => {
+  const handleDelete = (e: SyntheticEvent) => {
+    e.preventDefault();
     setOpen(false);
     dispatch(fetchDeleteDesk({ id }));
   };
@@ -33,7 +34,8 @@ export const DeskEditForm: React.FC<FormProps> = ({open, setOpen, id}) => {
     setOpen(false);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (e: SyntheticEvent) => {
+    e.preventDefault();
     setOpen(false);
     const deskTitle: HTMLInputElement | null = document.querySelector('#deskTitle');
     const data = { 

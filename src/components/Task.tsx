@@ -45,8 +45,8 @@ export const Task: React.FC<TaskProps> = ({ title, columnId, taskId, priority, d
     
       <StyledTask
         color={Colors[priority]}
-        onMouseOver={onMouseOverHandler}
-        onMouseOut={onMouseOutHandler}
+        onPointerOver={onMouseOverHandler}
+        onPointerOut={onMouseOutHandler}
       >
         <StyledOverlay
           isActive={active}

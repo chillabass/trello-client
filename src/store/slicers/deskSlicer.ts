@@ -29,14 +29,19 @@ export const deskSlice: Slice = createSlice({
     setOneDesk: (state, action: PayloadAction<IDesk>) => {
       state.desks.push(action.payload);
     },
+    updateColumnPositions: (state, action: PayloadAction<{id: number, pos: number[]}>) => {
+      const index = state.desks.findIndex((desks: IDesk) => desks.id === action.payload.id);
+      state.desks[index].positions = action.payload.pos;
+    },
     resetDesks: (state) => {
       state.desks = null;
     },
     editDesk: (state, action: PayloadAction<IDesk>) => {
       const updatedDesk = action.payload;
-      state.desks.map((column: IDesk) => {
-        if (column.id === updatedDesk.id) {
-          column.title = updatedDesk.title;
+      state.desks.map((desk: IDesk) => {
+        if (desk.id === updatedDesk.id) {
+          desk.title = updatedDesk.title;
+          desk.positions = updatedDesk.positions;
         }
       });
     },
@@ -63,6 +68,7 @@ export const {
   deleteDesk,
   setOneDesk,
   setDesks,
+  updateColumnPositions,
   resetDesks,
 } = deskSlice.actions;
 

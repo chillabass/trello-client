@@ -17,8 +17,16 @@ export const columnSlice: Slice = createSlice({
     setOneColumn: (state, action: PayloadAction<IColumn>) => {
       state.columns.push(action.payload);
     },
+    updateOneColumn: (state, action: PayloadAction<IColumn>) => {
+      const index = state.columns.findIndex((column: IColumn) => column.id === action.payload.id);
+      state.columns[index] = action.payload;
+    },
     setColumns: (state, action: PayloadAction<IColumn[]>) => {
       state.columns = action.payload;
+    },
+    updateTaskPositions: (state, action: PayloadAction<{id: number, pos: number[]}>) => {
+      const index = state.columns.findIndex((column: IColumn) => column.id === action.payload.id);
+      state.columns[index].positions = action.payload.pos;
     },
     resetColumns: (state) => {
       state.columns = null;
@@ -29,7 +37,7 @@ export const columnSlice: Slice = createSlice({
         if (column.id === updatedColumn.id) {
           column.title = updatedColumn.title;
           column.deskId = updatedColumn.deskId;
-          column.position = updatedColumn.position;
+          column.positions = updatedColumn.positions;
         }
       });
     },
@@ -46,6 +54,8 @@ export const {
   deleteColumn,
   setColumns,
   setOneColumn,
+  updateOneColumn,
+  updateTaskPositions,
   resetColumns,
 } = columnSlice.actions;
 

@@ -58,17 +58,3 @@ export const fetchDeleteTask = createAsyncThunk(
     }
   }
 );
-
-export const fetchMoveTask = createAsyncThunk(
-  'tasks/fetchMoveTask',
-  async (data: {id: number, columnId: number, removedIndex: number, addedIndex: number}, { dispatch, rejectWithValue }) => {
-    try {
-      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url: string = `${GENERAL_URL}/move`;
-      const response = await axios.post<{message: string; }>(url, data, reqConfig);
-    } catch (e: any) {
-      alert(e.response?.data);
-      return rejectWithValue(e.response?.data);
-    }
-  }
-);

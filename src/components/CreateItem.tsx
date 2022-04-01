@@ -56,7 +56,7 @@ const StyledParagraph = styled.p`
 `;
 
 const StyledContainer = styled(Link)`
-  margin: 5px;
+  margin: 10px 5px;
   padding: 5px 10px;
   width: 150px;
   height: 80px;

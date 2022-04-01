@@ -6,12 +6,14 @@ import { Task } from './Task';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
 import { TaskCreateForm } from './TaskCreateForm';
-import { fetchAddTask, fetchEditTask, fetchMoveTask } from '../store/asyncActions/taskAction';
+import { fetchAddTask, fetchEditTask } from '../store/asyncActions/taskAction';
 import { getTasks } from '../store/slicers/taskSlicer';
 import { ColumnsEditForm } from './ColumnEditForm';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { getColumns } from '../store/slicers/columnSlicer';
+import { getColumns, updateTaskPositions } from '../store/slicers/columnSlicer';
 import { IColumn } from '../types/column';
+import { applyDrag, sortItemsByPositions } from '../services/utils/itemsOrder';
+import { fetchUpdateTaskPositions } from '../store/asyncActions/columnActions';
 
 interface ColumnProps {
   id: number;
@@ -23,6 +25,10 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
 
   const [formActive, setFormActive] = useState(false);
   const [editFormActive, setEditFormActive] = useState(false);
+
+  const allColumns: IColumn[] = useAppSelector(getColumns);
+  const index = allColumns.findIndex(column => column.id === id);
+  const positions = allColumns[index].positions;
 
   const allTasks: ITask[] = useAppSelector(getTasks);
   const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === id);
@@ -42,15 +48,13 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
 
   const onTaskDrop = (columnId: number, dropResult: DropResult) => {
     console.log('onTaskDrop:', dropResult);
-    if (dropResult.removedIndex !== null && dropResult.addedIndex !== null) {
-      console.log(columnId)
-      
-      // dispatch(fetchMoveTask({
-      //   id: dropResult.payload.id,
-      //   columnId,
-      //   addedIndex: dropResult.addedIndex,
-      //   removedIndex: dropResult.removedIndex,
-      // }));
+    if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+      const index = allColumns.findIndex(column => column.id === id);
+      const positions = allColumns[index].positions;    
+      const newPositions = applyDrag(positions, dropResult);
+      console.log(`colId: ${columnId}, positions:\n${newPositions}`);
+      dispatch(updateTaskPositions({id: columnId, pos: newPositions})); // update on frontend
+      dispatch(fetchUpdateTaskPositions({columnId, positions: newPositions})); // update on backend
     }
   };
 
@@ -86,7 +90,7 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
         }}
       >
         {
-          tasks.sort((lTask, rTask) => lTask.position - rTask.position).map((task: ITask) => {
+          sortItemsByPositions(tasks, positions).map((task: ITask) => {
             return (
               <Draggable key={task.id}>
                 <Task
@@ -122,9 +126,9 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
 }
 
 const StyledColumn = styled.div`
-  min-height: 70px;
+  min-height: 30px;
   height: fit-content;
-  width: 272px;
+  width: 300px;
   background-color: #ebecf0;
   border-radius: 5px;
   margin: 10px;
