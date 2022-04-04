@@ -28,6 +28,10 @@ export const columnSlice: Slice = createSlice({
       const index = state.columns.findIndex((column: IColumn) => column.id === action.payload.id);
       state.columns[index].positions = action.payload.pos;
     },
+    setNewTaskPositionInArray: (state, action: PayloadAction<{columnId: number, taskId: number}>) => {
+      const index = state.columns.findIndex((column: IColumn) => column.id === action.payload.columnId);
+      state.columns[index].positions.push(action.payload.taskId);
+    },
     resetColumns: (state) => {
       state.columns = null;
     },
@@ -56,6 +60,7 @@ export const {
   setOneColumn,
   updateOneColumn,
   updateTaskPositions,
+  setNewTaskPositionInArray,
   resetColumns,
 } = columnSlice.actions;
 

@@ -41,8 +41,8 @@ export const taskSlice: Slice = createSlice({
       const index = state.tasks.findIndex((task: { id: number; }) => task.id === action.payload);
       state.tasks.splice(index, 1);
     },
-    moveTask: (state, action: PayloadAction<{columnId: number; positions: number[]}>) => {
-      
+    moveTask: (state, action: PayloadAction<{ id: number; columnId: number; }>) => {
+      state.tasks.find((task: { id: number; }) => task.id === action.payload.id).columnId = action.payload.columnId;
     },
   },
 });
@@ -54,6 +54,7 @@ export const {
   setOneTask,
   setTasks,
   resetTasks,
+  moveTask,
 } = taskSlice.actions;
 
 export const getTasks = (state: RootState) => state.tasks.tasks;

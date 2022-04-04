@@ -1,11 +1,12 @@
 import { DropResult } from "react-smooth-dnd";
 
 export const applyDrag = (arr: number[], dropResult: DropResult) => {
+  // debugger
   const { removedIndex, addedIndex, payload } = dropResult;
   if (removedIndex === null && addedIndex === null) return arr;
 
   const result = [...arr] as any;
-  let itemToAdd = payload;
+  let itemToAdd = payload.id;
 
   if (removedIndex !== null) {
     itemToAdd = result.splice(removedIndex, 1)[0];

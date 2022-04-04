@@ -5,14 +5,15 @@ import { BoardHeader } from '../components/BoardHeader';
 import { Column } from '../components/Column';
 import { CreateButton } from '../components/CreateButton';
 import { FormDialog as Form } from '../components/CreatingForm';
-import { fetchAddColumn, fetchMoveColumn } from '../store/asyncActions/columnActions';
+import { fetchAddColumn } from '../store/asyncActions/columnActions';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { getDesks, updateColumnPositions } from '../store/slicers/deskSlicer';
 import { IColumn } from '../types/column';
 import { IDesk } from '../types/desk';
 import { getColumns } from '../store/slicers/columnSlicer';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { applyDrag } from '../services/utils/itemsOrder';
+import { applyDrag, sortItemsByPositions } from '../services/utils/itemsOrder';
+import { fetchUpdateColumnPositions } from '../store/asyncActions/deskActions';
 
 export const Deskpage: React.FC = () => {
   const location = useLocation();
@@ -27,8 +28,8 @@ export const Deskpage: React.FC = () => {
   // По id доски получаем ее название
   const deskTitle: string = desks.find((desk: { id: number; }) => desk.id === +deskId)?.title || 'unknown';
 
-  const index = allColumns.findIndex(column => column.id === id);
-  const positions = allColumns[index].positions;
+  const index = desks.findIndex(column => column.id === deskId);
+  let positions = desks[index].positions;
 
   // Получаем массив всех колонок
   const allColumns: IColumn[] = useAppSelector(getColumns);
@@ -47,9 +48,9 @@ export const Deskpage: React.FC = () => {
     console.log('onColumnDrop:', dropResult);
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       const index = desks.findIndex(desk => desk.id === deskId);
-      const positions = desks[index].positions;    
+      positions = desks[index].positions;    
       const newPositions = applyDrag(positions, dropResult);
-      dispatch(updateColumnPositions({pos: newPositions})); // update on frontend
+      dispatch(updateColumnPositions({id: deskId, pos: newPositions})); // update on frontend
       dispatch(fetchUpdateColumnPositions({deskId, positions: newPositions})); // update on backend
     }
   };
@@ -75,12 +76,13 @@ export const Deskpage: React.FC = () => {
             className: 'cards-drop-preview'
           }}
         >
-          {columns.map(column => {
+          {sortItemsByPositions(columns, positions).map((column: IColumn) => {
             return (
             <Draggable key={column.id}>
               <Column
                 title={column.title}
                 id={column.id}
+                deskId={deskId}
               />
             </Draggable>
             )

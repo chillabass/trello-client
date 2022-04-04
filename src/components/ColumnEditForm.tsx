@@ -12,6 +12,7 @@ interface FormProps {
   open: boolean;
   setOpen: (flag: boolean) => void;
   columnId: number;
+  deskId: number;
 };
 
 interface IEditColumn {
@@ -21,12 +22,12 @@ interface IEditColumn {
   position?: number;
 };
 
-export const ColumnsEditForm: React.FC<FormProps> = ({open, setOpen, columnId}) => {
+export const ColumnsEditForm: React.FC<FormProps> = ({open, setOpen, columnId, deskId}) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
-    handleClose();
-    dispatch(fetchDeleteColumn({id: columnId}));
+    setOpen(false);
+    dispatch(fetchDeleteColumn({id: columnId, deskId,}));
   };
 
   const handleClose = () => {
@@ -34,7 +35,7 @@ export const ColumnsEditForm: React.FC<FormProps> = ({open, setOpen, columnId}) 
   };
 
   const handleEdit = () => {
-    handleClose();
+    setOpen(false);
     const columnTitle: HTMLInputElement | null = document.querySelector('#columnTitle');
     const data: IEditColumn = { id: columnId };
     if (columnTitle?.value.trim()) data.title = columnTitle?.value.trim();

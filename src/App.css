@@ -9,7 +9,7 @@
 }
 
 .smooth-dnd-container .vertical {
-  min-height: 0px;
+  min-height: 20px;
   width: 100%;
 }
 

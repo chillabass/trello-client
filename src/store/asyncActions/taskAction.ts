@@ -2,7 +2,8 @@ import axios from 'axios';
 import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../../config';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITask } from '../../types/task';
-import { deleteTask, editTask, setOneTask } from '../slicers/taskSlicer';
+import { deleteTask, editTask, moveTask, setOneTask } from '../slicers/taskSlicer';
+import { setNewTaskPositionInArray } from '../slicers/columnSlicer';
 
 const GENERAL_URL = `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/tasks`;
 
@@ -22,6 +23,7 @@ export const fetchAddTask = createAsyncThunk(
       const url: string = `${GENERAL_URL}/add`;
       const response = await axios.post<{message: string; task: ITask}>(url, data, reqConfig);
       dispatch(setOneTask(response.data.task));
+      dispatch(setNewTaskPositionInArray({columnId: response.data.task.columnId, taskId: response.data.task.id, }))
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -52,6 +54,21 @@ export const fetchDeleteTask = createAsyncThunk(
       const url: string = `${GENERAL_URL}/delete`;
       const response = await axios.post<{message: string; deleted: boolean; id: number}>(url, data, reqConfig);
       if (response.data.deleted) dispatch(deleteTask(response.data.id));
+    } catch (e: any) {
+      alert(e.response?.data);
+      return rejectWithValue(e.response?.data);
+    }
+  }
+);
+
+export const fetchMoveTask = createAsyncThunk(
+  'tasks/fetchMoveTask',
+  async (data: {id: number; columnId: number;}, { dispatch, rejectWithValue }) => {
+    try {
+      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+      const url: string = `${GENERAL_URL}/move`;
+      const response = await axios.post<{message: string; id: number; columnId: number;}>(url, data, reqConfig);
+      // dispatch(moveTask({id: response.data.id, columnId: response.data.columnId}));
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);

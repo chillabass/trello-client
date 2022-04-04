@@ -3,6 +3,7 @@ import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../../config';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IColumn } from '../../types/column';
 import { deleteColumn, editColumn, setColumns, setOneColumn, updateOneColumn } from '../slicers/columnSlicer';
+import { setNewColumnPositionInArray, updateOneDesk } from '../slicers/deskSlicer';
 
 const GENERAL_URL = `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/columns`;
 
@@ -15,7 +16,7 @@ const reqConfig = {
 };
 
 export const fetchAddColumn = createAsyncThunk(
-  'columns/fetchAddColumn',
+  'column/fetchAddColumn',
   async (data: {deskId: number; title: string;}, { dispatch, rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
@@ -26,6 +27,7 @@ export const fetchAddColumn = createAsyncThunk(
       };
       const response = await axios.post<{message: string; column: IColumn}>(url, column, reqConfig);
       dispatch(setOneColumn(response.data.column));
+      dispatch(setNewColumnPositionInArray({deskId: response.data.column.deskId, columnId: response.data.column.id}));
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -34,7 +36,7 @@ export const fetchAddColumn = createAsyncThunk(
 );
 
 export const fetchEditColumn = createAsyncThunk(
-  'tasks/fetchEditColumn',
+  'column/fetchEditColumn',
   async (data: { id: number; deskId?: number; title?: string; position?: number; }, { dispatch, rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
@@ -49,13 +51,16 @@ export const fetchEditColumn = createAsyncThunk(
 );
 
 export const fetchDeleteColumn = createAsyncThunk(
-  'tasks/fetchDeleteColumn',
-  async (data: {id: number}, { dispatch, rejectWithValue }) => {
+  'column/fetchDeleteColumn',
+  async (data: { id: number; deskId: number; }, { dispatch, rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
       const url: string = `${GENERAL_URL}/delete`;
-      const response = await axios.post<{message: string; deleted: boolean; id: number}>(url, data, reqConfig);
-      if (response.data.deleted) dispatch(deleteColumn(response.data.id));
+      const response = await axios.post<{message: string; deleted: boolean; id: number, desk: {positions: number[]}}>(url, data, reqConfig);
+      if (response.data.deleted) {
+        dispatch(deleteColumn(response.data.id));
+        dispatch(updateOneDesk(response.data.desk));
+      }
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -63,23 +68,23 @@ export const fetchDeleteColumn = createAsyncThunk(
   }
 );
 
-export const fetchMoveColumn = createAsyncThunk(
-  'tasks/fetchMoveColumn',
-  async (data: {deskId: number, removedIndex: number, addedIndex: number}, { dispatch, rejectWithValue }) => {
-    try {
-      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url: string = `${GENERAL_URL}/move`;
-      const response = await axios.post<{message: string; columns: IColumn[]}>(url, data, reqConfig);
-      dispatch(setColumns(response.data.columns));
-    } catch (e: any) {
-      alert(e.response?.data);
-      return rejectWithValue(e.response?.data);
-    }
-  }
-);
+// export const fetchMoveColumn = createAsyncThunk(
+//   'columns/fetchMoveColumn',
+//   async (data: {deskId: number, removedIndex: number, addedIndex: number}, { dispatch, rejectWithValue }) => {
+//     try {
+//       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+//       const url: string = `${GENERAL_URL}/move`;
+//       const response = await axios.post<{message: string; columns: IColumn[]}>(url, data, reqConfig);
+//       dispatch(setColumns(response.data.columns));
+//     } catch (e: any) {
+//       alert(e.response?.data);
+//       return rejectWithValue(e.response?.data);
+//     }
+//   }
+// );
 
 export const fetchUpdateTaskPositions = createAsyncThunk(
-  'tasks/fetchUpdateTaskPositions',
+  'column/fetchUpdateTaskPositions',
   async (data: {columnId: number, positions: number[]}, { dispatch, rejectWithValue }) => {
     try {
       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;

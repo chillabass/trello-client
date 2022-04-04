@@ -6,8 +6,8 @@ import { Task } from './Task';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
 import { TaskCreateForm } from './TaskCreateForm';
-import { fetchAddTask, fetchEditTask } from '../store/asyncActions/taskAction';
-import { getTasks } from '../store/slicers/taskSlicer';
+import { fetchAddTask, fetchEditTask, fetchMoveTask } from '../store/asyncActions/taskAction';
+import { getTasks, moveTask } from '../store/slicers/taskSlicer';
 import { ColumnsEditForm } from './ColumnEditForm';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { getColumns, updateTaskPositions } from '../store/slicers/columnSlicer';
@@ -17,10 +17,11 @@ import { fetchUpdateTaskPositions } from '../store/asyncActions/columnActions';
 
 interface ColumnProps {
   id: number;
+  deskId: number;
   title: string;
 }
 
-export const Column: React.FC<ColumnProps> = ({ id, title }) => {
+export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
   const dispatch = useAppDispatch();
 
   const [formActive, setFormActive] = useState(false);
@@ -28,7 +29,7 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
 
   const allColumns: IColumn[] = useAppSelector(getColumns);
   const index = allColumns.findIndex(column => column.id === id);
-  const positions = allColumns[index].positions;
+  let positions = allColumns[index].positions;
 
   const allTasks: ITask[] = useAppSelector(getTasks);
   const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === id);
@@ -50,11 +51,15 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
     console.log('onTaskDrop:', dropResult);
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       const index = allColumns.findIndex(column => column.id === id);
-      const positions = allColumns[index].positions;    
+      positions = allColumns[index].positions;    
       const newPositions = applyDrag(positions, dropResult);
       console.log(`colId: ${columnId}, positions:\n${newPositions}`);
-      dispatch(updateTaskPositions({id: columnId, pos: newPositions})); // update on frontend
-      dispatch(fetchUpdateTaskPositions({columnId, positions: newPositions})); // update on backend
+      dispatch(updateTaskPositions({id: columnId, pos: newPositions})); // update positions in columns on frontend
+      if (dropResult.addedIndex !== null) {
+        dispatch(moveTask({id: dropResult.payload.id, columnId,}));
+        dispatch(fetchMoveTask({id: dropResult.payload.id, columnId,}));
+      }
+      dispatch(fetchUpdateTaskPositions({columnId, positions: newPositions})); // update positions in columns  on backend
     }
   };
 
@@ -118,6 +123,7 @@ export const Column: React.FC<ColumnProps> = ({ id, title }) => {
       />
       <ColumnsEditForm
         columnId={id}
+        deskId={deskId}
         open={editFormActive}
         setOpen={setEditFormActive}
       />
