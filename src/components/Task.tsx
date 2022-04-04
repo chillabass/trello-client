@@ -12,21 +12,8 @@ interface TaskProps {
   priority: number;
 };
 
-interface OverlayProps {
-  isActive: boolean;
-};
-
 export const Task: React.FC<TaskProps> = ({ title, columnId, taskId, priority, description }) => {
-  const [active, setActive] = useState(false);
   const [taskEditActive, setTaskEditActive] = useState(false);
-
-  const onMouseOverHandler = () => {
-    setActive(true);
-  }
-
-  const onMouseOutHandler = () => {
-    setActive(false);
-  }
 
   const onClickHandler = () => {
     setTaskEditActive(true);
@@ -45,11 +32,9 @@ export const Task: React.FC<TaskProps> = ({ title, columnId, taskId, priority, d
     
       <StyledTask
         color={Colors[priority]}
-        onPointerOver={onMouseOverHandler}
-        onPointerOut={onMouseOutHandler}
       >
         <StyledOverlay
-          isActive={active}
+          className='task-overlay'
           onClick={onClickHandler}
         />
         <StyledP>{title}</StyledP>
@@ -73,6 +58,10 @@ const StyledTask = styled.div<{color: string;}>`
   border-radius: 3px;
   box-shadow: 0px 1px 6px -1px #444;
   cursor: pointer;
+
+  &:hover .task-overlay {
+    opacity: 1;
+  }
 `;
 
 const StyledP = styled.p`
@@ -80,9 +69,10 @@ const StyledP = styled.p`
   padding-right: 15px;
 `;
 
-const StyledOverlay = styled.div<OverlayProps>`
-  display: ${props => props.isActive ? 'block;' : 'none;'};
+const StyledOverlay = styled.div`
+  opacity: 0;
   position: absolute;
+  transition: .2s;
   top: 0;
   left: 0;
   width: 100%;

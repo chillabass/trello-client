@@ -10,6 +10,7 @@ import { fetchDeleteDesk, fetchEditDesk } from '../store/asyncActions/deskAction
 import { IDesk } from '../types/desk';
 
 interface FormProps {
+  title: string;
   open: boolean;
   setOpen: (flag: boolean) => void;
   id: number;
@@ -20,7 +21,7 @@ interface IEditDesk {
   title?: string;
 }
 
-export const DeskEditForm: React.FC<FormProps> = ({open, setOpen, id}) => {
+export const DeskEditForm: React.FC<FormProps> = ({title, open, setOpen, id}) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = (e: SyntheticEvent) => {
@@ -51,6 +52,7 @@ export const DeskEditForm: React.FC<FormProps> = ({open, setOpen, id}) => {
         <DialogContent>
           <TextField
             autoFocus
+            defaultValue={title}
             margin="dense"
             id="deskTitle"
             label='Title'

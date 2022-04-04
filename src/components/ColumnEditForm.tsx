@@ -9,6 +9,7 @@ import { useAppDispatch } from '../store/hooks';
 import { fetchDeleteColumn, fetchEditColumn } from '../store/asyncActions/columnActions';
 
 interface FormProps {
+  title: string;
   open: boolean;
   setOpen: (flag: boolean) => void;
   columnId: number;
@@ -22,7 +23,7 @@ interface IEditColumn {
   position?: number;
 };
 
-export const ColumnsEditForm: React.FC<FormProps> = ({open, setOpen, columnId, deskId}) => {
+export const ColumnsEditForm: React.FC<FormProps> = ({title, open, setOpen, columnId, deskId}) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
@@ -47,6 +48,7 @@ export const ColumnsEditForm: React.FC<FormProps> = ({open, setOpen, columnId, d
         <DialogTitle>Edit Column</DialogTitle>
         <DialogContent>
           <TextField
+            defaultValue={title}
             autoFocus
             margin="dense"
             id="columnTitle"

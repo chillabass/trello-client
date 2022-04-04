@@ -26,10 +26,11 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
 
   const [formActive, setFormActive] = useState(false);
   const [editFormActive, setEditFormActive] = useState(false);
+  const [byDesc, setByDesc] = useState(true);
 
   const allColumns: IColumn[] = useAppSelector(getColumns);
   const index = allColumns.findIndex(column => column.id === id);
-  let positions = allColumns[index].positions;
+  const positions = allColumns[index].positions;
 
   const allTasks: ITask[] = useAppSelector(getTasks);
   const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === id);
@@ -42,6 +43,14 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
     setEditFormActive(true);
   };
 
+  const sortHandler = () => {
+    const sortedPositions  = byDesc ? 
+    tasks.sort((a, b) => b.priority - a.priority).map(item => item.id) :
+    tasks.sort((a, b) => a.priority - b.priority).map(item => item.id);
+    setByDesc(!byDesc);
+    dispatch(updateTaskPositions({id, pos: sortedPositions}));
+  }  
+
   const getData = (title: string, priority: number) => {
     const columnId = id;
     if (title) dispatch(fetchAddTask({ title, columnId, priority }));
@@ -51,7 +60,7 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
     console.log('onTaskDrop:', dropResult);
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       const index = allColumns.findIndex(column => column.id === id);
-      positions = allColumns[index].positions;    
+      const positions = allColumns[index].positions;    
       const newPositions = applyDrag(positions, dropResult);
       console.log(`colId: ${columnId}, positions:\n${newPositions}`);
       dispatch(updateTaskPositions({id: columnId, pos: newPositions})); // update positions in columns on frontend
@@ -71,7 +80,13 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
     <StyledColumn>
       <StyledColumnHeader>
         <StyledColumnTitle className='column-drag-handle'>{title}</StyledColumnTitle>
-        <StyledColumnMenu onClick={editHandler} />
+        <StyledColumnMenu>
+          <StyledMenu className='styled-menu'>
+            <StyledColumnButton onClick={sortHandler}>Sort</StyledColumnButton>
+            <StyledColumnButton onClick={editHandler}>Edit</StyledColumnButton>
+          </StyledMenu>
+        </StyledColumnMenu>
+
       </StyledColumnHeader>
       <Container
         groupName="col"
@@ -122,6 +137,7 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
         getData={getData}
       />
       <ColumnsEditForm
+        title={title}
         columnId={id}
         deskId={deskId}
         open={editFormActive}
@@ -164,13 +180,38 @@ const StyledColumnMenu = styled.div`
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
+  position: relative;
   background-image: url(${editIcon});
   background-size: 15px;
   background-repeat: no-repeat;
   background-position: center;
 
+  &:hover .styled-menu {
+    visibility: visible;
+    width: fit-content;
+    min-height: 50px;
+  }
+`;
+
+const StyledMenu = styled.div`
+  padding: 5px;
+  left: 25px;
+  position: absolute;
+  display: inline-block;
+  background-color: rgba(10, 10, 10, .7);
+  border-radius: 5px;
+  z-index: 1;
+  visibility: hidden;
+`;
+
+const StyledColumnButton = styled.div`
+  padding: 10px 18px;
+  background-color: transparent;
+  color: #eee;
+  border-radius: 5px;
+  
   &:hover {
-    background-color: rgb(200, 200, 200);
+    background-color: #7c7c7c;
   }
 `;
 
