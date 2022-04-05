@@ -33,7 +33,7 @@ export const Signinpage: React.FC = () => {
   <StyledSignup>
     <StyledTitle>Authentication</StyledTitle>
     <StyledForm onSubmit={onSubmitHandler}>
-      <FormItem 
+      <FormItem
         label='Login' 
         name='login' 
         inputType='text'/>

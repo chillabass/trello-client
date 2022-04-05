@@ -7,7 +7,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAppDispatch } from '../store/hooks';
 import { fetchDeleteDesk, fetchEditDesk } from '../store/asyncActions/deskActions';
-import { IDesk } from '../types/desk';
 
 interface FormProps {
   title: string;
@@ -15,11 +14,6 @@ interface FormProps {
   setOpen: (flag: boolean) => void;
   id: number;
 };
-
-interface IEditDesk {
-  id: number;
-  title?: string;
-}
 
 export const DeskEditForm: React.FC<FormProps> = ({title, open, setOpen, id}) => {
   const dispatch = useAppDispatch();
@@ -47,7 +41,10 @@ export const DeskEditForm: React.FC<FormProps> = ({title, open, setOpen, id}) =>
   };
 
   return (
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog 
+        onClick={e => e.preventDefault()} 
+        open={open} 
+        onClose={handleClose}>
         <DialogTitle>Edit Desk</DialogTitle>
         <DialogContent>
           <TextField

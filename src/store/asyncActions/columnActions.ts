@@ -1,31 +1,18 @@
-import axios from 'axios';
-import { PROTOCOL, SERVER_HOST, SERVER_PORT } from '../../config';
+import api from '../../services/api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IColumn } from '../../types/column';
 import { deleteColumn, editColumn, setColumns, setOneColumn, updateOneColumn } from '../slicers/columnSlicer';
 import { setNewColumnPositionInArray, updateOneDesk } from '../slicers/deskSlicer';
 
-const GENERAL_URL = `${PROTOCOL}://${SERVER_HOST}:${SERVER_PORT}/columns`;
-
-const reqConfig = {
-  headers: { 
-    "Authorization": `Bearer ${localStorage.getItem('token')}`,
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": GENERAL_URL,
-  }
-};
-
 export const fetchAddColumn = createAsyncThunk(
   'column/fetchAddColumn',
   async (data: {deskId: number; title: string;}, { dispatch, rejectWithValue }) => {
     try {
-      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url: string = `${GENERAL_URL}/add`;
       const column: object = {
         deskId: data.deskId,
         title: data.title,
       };
-      const response = await axios.post<{message: string; column: IColumn}>(url, column, reqConfig);
+      const response = await api.post<{message: string; column: IColumn}>('/columns/add', column);
       dispatch(setOneColumn(response.data.column));
       dispatch(setNewColumnPositionInArray({deskId: response.data.column.deskId, columnId: response.data.column.id}));
     } catch (e: any) {
@@ -39,9 +26,7 @@ export const fetchEditColumn = createAsyncThunk(
   'column/fetchEditColumn',
   async (data: { id: number; deskId?: number; title?: string; position?: number; }, { dispatch, rejectWithValue }) => {
     try {
-      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url: string = `${GENERAL_URL}/edit`;
-      const response = await axios.post<{message: string; column: IColumn}>(url, data, reqConfig);
+      const response = await api.post<{message: string; column: IColumn}>('/columns/edit', data);
       dispatch(editColumn(response.data.column));
     } catch (e: any) {
       alert(e.response?.data);
@@ -54,9 +39,7 @@ export const fetchDeleteColumn = createAsyncThunk(
   'column/fetchDeleteColumn',
   async (data: { id: number; deskId: number; }, { dispatch, rejectWithValue }) => {
     try {
-      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url: string = `${GENERAL_URL}/delete`;
-      const response = await axios.post<{message: string; deleted: boolean; id: number, desk: {positions: number[]}}>(url, data, reqConfig);
+      const response = await api.post<{message: string; deleted: boolean; id: number, desk: {positions: number[]}}>('/columns/delete', data);
       if (response.data.deleted) {
         dispatch(deleteColumn(response.data.id));
         dispatch(updateOneDesk(response.data.desk));
@@ -68,28 +51,11 @@ export const fetchDeleteColumn = createAsyncThunk(
   }
 );
 
-// export const fetchMoveColumn = createAsyncThunk(
-//   'columns/fetchMoveColumn',
-//   async (data: {deskId: number, removedIndex: number, addedIndex: number}, { dispatch, rejectWithValue }) => {
-//     try {
-//       reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-//       const url: string = `${GENERAL_URL}/move`;
-//       const response = await axios.post<{message: string; columns: IColumn[]}>(url, data, reqConfig);
-//       dispatch(setColumns(response.data.columns));
-//     } catch (e: any) {
-//       alert(e.response?.data);
-//       return rejectWithValue(e.response?.data);
-//     }
-//   }
-// );
-
 export const fetchUpdateTaskPositions = createAsyncThunk(
   'column/fetchUpdateTaskPositions',
   async (data: {columnId: number, positions: number[]}, { dispatch, rejectWithValue }) => {
     try {
-      reqConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-      const url: string = `${GENERAL_URL}/move`;
-      const response = await axios.post<{message: string; column: IColumn}>(url, data, reqConfig);
+      const response = await api.post<{message: string; column: IColumn}>('/columns/move', data);
       dispatch(updateOneColumn(response.data.column));
     } catch (e: any) {
       alert(e.response?.data);

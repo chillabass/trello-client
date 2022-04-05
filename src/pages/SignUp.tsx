@@ -39,7 +39,7 @@ export const Signuppage: React.FC = () => {
       if (userData.password === userData.confirm) {
         return true;
       } else {
-        alert('пароли не совпадают!');
+        alert('Пароли не совпадают!');
         return false;
       } 
     } else {

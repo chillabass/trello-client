@@ -9,10 +9,6 @@ interface ItemProps {
   href: string;
 };
 
-interface OverlayProps {
-  isActive: boolean;
-};
-
 export const CreateItem: React.FC<ItemProps> = ({ title, href }) => {
   const [editFormActive, setEditFormActive] = useState(false);
 

@@ -73,7 +73,7 @@ export const ProfileInfo: React.FC = () => {
           color='primary'
           onClick={clickEditHandler}
           variant='contained'
-          style={{ marginRight: '15px' }}>
+          style={{ marginRight: '15px', marginBottom: '15px' }}>
           Редактировать
         </Button>
         <Button
@@ -118,20 +118,14 @@ const StyledAvatar = styled(Avatar)({
   margin: '15px',
 });
 
-const StyledOFD = styled(Button)({
-  color: '#0d74ce',
-  cursor: 'pointer',
-  transition: '.2s',
-  textDecoration: 'none',
-  '&:hover': {
-    color: '#6197b6',
-  },
-});
-
 const StyledInfoRight = styled(Box)({
   maxWidth: 800,
   marginBottom: '20px',
   marginRight: '20px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  justifyContent: 'center'
 });
 
 const StyledTypography = styled(Typography)({
