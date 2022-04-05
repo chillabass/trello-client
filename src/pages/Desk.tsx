@@ -5,7 +5,7 @@ import { BoardHeader } from '../components/BoardHeader';
 import { Column } from '../components/Column';
 import { CreateButton } from '../components/CreateButton';
 import { FormDialog as Form } from '../components/CreatingForm';
-import { fetchAddColumn } from '../store/asyncActions/columnActions';
+import { fetchAddColumn, socketAddColumn } from '../store/asyncActions/columnActions';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { getDesks, updateColumnPositions } from '../store/slicers/deskSlicer';
 import { IColumn } from '../types/column';
@@ -41,7 +41,7 @@ export const Deskpage: React.FC = () => {
   }
 
   const getData = (title: string | null | undefined) => {
-    if (title) dispatch(fetchAddColumn({ title, deskId }));
+    if (title) dispatch(socketAddColumn({ title, deskId }));
   }
 
   const onColumnDrop = (dropResult: DropResult) => {

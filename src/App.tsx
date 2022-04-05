@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { Header } from './components/Header';
-import { Routes, Route, Navigate, RouteProps } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './hoc/PrivateRouter';
 import { useAppDispatch } from './store/hooks';
 import { fetchGetUser } from './store/asyncActions/userActions';

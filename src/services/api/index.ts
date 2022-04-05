@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as config from '../../config';
+import { io } from 'socket.io-client';
 
 const api = axios.create({
   baseURL: config.BASE_URL,
@@ -8,6 +9,12 @@ const api = axios.create({
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": config.BASE_URL,
   }
+});
+
+export const socket = io(api.defaults.baseURL || 'http://localhost:5000', {
+  auth: {
+    token: `Bearer ${localStorage.getItem('token')}`,
+  },
 });
 
 api.interceptors.request.use(req => {
