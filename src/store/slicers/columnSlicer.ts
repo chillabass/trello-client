@@ -2,12 +2,16 @@ import { createSlice, Slice, PayloadAction } from '@reduxjs/toolkit';
 import { IColumn } from '../../types/column';
 import type { RootState } from '../store';
 
+export interface ColumnObject {
+  [key: string | number]: IColumn;
+}
+
 interface ColumnState {
-  columns: IColumn[];
+  columns: ColumnObject;
 };
 
 const initialState = {
-  columns: [],
+  columns: {},
 } as ColumnState;
 
 export const columnSlice: Slice = createSlice({
@@ -24,7 +28,12 @@ export const columnSlice: Slice = createSlice({
       }
     },
     setColumns: (state, action: PayloadAction<IColumn[]>) => {
-      state.columns = action.payload;
+      let columns: ColumnObject = {};
+      action.payload.forEach((item: IColumn) => {
+        columns[item.id] = item;
+      });
+      state.columns = columns;
+      // state.columns = action.payload;
     },
     updateTaskPositions: (state, action: PayloadAction<{id: number, pos: number[]}>) => {
       const index = state.columns.findIndex((column: IColumn) => column.id === action.payload.id);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import plusIcon from '../img/plus.svg';
 import editIcon from '../img/edit.svg';
@@ -7,10 +7,10 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
 import { TaskCreateForm } from './TaskCreateForm';
 import { fetchMoveTask } from '../store/asyncActions/taskAction';
-import { getTasks, moveTask, } from '../store/slicers/taskSlicer';
+import { getTasks, moveTask, TaskObject, } from '../store/slicers/taskSlicer';
 import { ColumnsEditForm } from './ColumnEditForm';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { getColumns, updateTaskPositions } from '../store/slicers/columnSlicer';
+import { ColumnObject, getColumns, updateTaskPositions } from '../store/slicers/columnSlicer';
 import { IColumn } from '../types/column';
 import { applyDrag, sortItemsByPositions } from '../services/utils/itemsOrder';
 import { fetchUpdateTaskPositions } from '../store/asyncActions/columnActions';
@@ -29,12 +29,15 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
   const [editFormActive, setEditFormActive] = useState(false);
   const [byDesc, setByDesc] = useState(true);
 
-  const allColumns: IColumn[] = useAppSelector(getColumns);
-  const index = allColumns.findIndex(column => column.id === id);
-  const positions = allColumns[index].positions;
+  const allColumns: ColumnObject = useAppSelector(getColumns);
+  const currentColumn = allColumns[id];
+  const positions = currentColumn.positions;
 
-  const allTasks: ITask[] = useAppSelector(getTasks);
-  const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === id);
+  const allTasks = useAppSelector(getTasks);
+
+  const tasks = positions.map((pos: number) => allTasks[pos]);
+
+  // const tasks: ITask[] = allTasks.filter((task: ITask) => task.columnId === id);
 
   const addTaskHandler = () => {
     setFormActive(true);
@@ -63,13 +66,19 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
   const onTaskDrop = (columnId: number, dropResult: DropResult) => {
     console.log('onTaskDrop:', dropResult);
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
-      const index = allColumns.findIndex(column => column.id === id);
-      const positions = allColumns[index].positions;
+      const positions = allColumns[id].positions;
       const newPositions = applyDrag(positions, dropResult);
-      console.log(`colId: ${columnId}, positions:\n${newPositions}`);
-      dispatch(updateTaskPositions({ id: columnId, pos: newPositions })); // update positions in columns on frontend
+
+      dispatch(updateTaskPositions({
+        id: columnId,
+        pos: newPositions
+      })); // update positions in columns on frontend
+
       if (dropResult.addedIndex !== null) {
-        dispatch(moveTask({ id: dropResult.payload.id, columnId, }));
+        dispatch(moveTask({
+          id: dropResult.payload.id,
+          columnId,
+        }));
         socket.emit('task:move', { id: dropResult.payload.id, columnId, });
         // dispatch(fetchMoveTask({ id: dropResult.payload.id, columnId, }));
       }
@@ -81,6 +90,10 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
   const getTaskPayload = (id: number, index: number) => {
     return tasks.filter(task => task.columnId === id)[index];
   }
+
+  const tasksList = useMemo(() => {
+    return sortItemsByPositions(Object.values(tasks), positions);
+  }, [tasks, positions]);
 
   return (
     <StyledColumn>
@@ -116,7 +129,8 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
         }}
       >
         {
-          sortItemsByPositions(tasks, positions).map((task: ITask) => {
+          tasksList.map((task: ITask) => {
+            console.log('hooyak', task)
             return (
               <Draggable key={task.id}>
                 <Task

@@ -2,12 +2,16 @@ import { createSlice, Slice, PayloadAction } from '@reduxjs/toolkit';
 import { IDesk } from '../../types/desk';
 import type { RootState } from '../store';
 
+export interface DeskObject {
+  [key: string | number]: IDesk;
+}
+
 interface DeskState {
-  desks: IDesk[];
+  desks: DeskObject;
 };
 
 const initialState = {
-  desks: [],
+  desks: {},
 } as DeskState;
 
 export const deskSlice: Slice = createSlice({
@@ -15,7 +19,12 @@ export const deskSlice: Slice = createSlice({
   initialState,
   reducers: {
     setDesks: (state, action: PayloadAction<IDesk[]>) => {
-      state.desks = action.payload;
+      // state.desks = action.payload;
+      let desks: DeskObject = {};
+      action.payload.forEach((item: IDesk) => {
+        desks[item.id] = item;
+      });
+      state.desks = desks;
     },
     setOneDesk: (state, action: PayloadAction<IDesk>) => {
       state.desks.push(action.payload);
