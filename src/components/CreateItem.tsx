@@ -19,6 +19,7 @@ export const CreateItem: React.FC<ItemProps> = ({ title, href }) => {
 
   return (
     <StyledContainer
+      key={href}
       to={`/desk/${href}`}
     >
       <StyledParagraph>{title}</StyledParagraph>

@@ -19,18 +19,24 @@ export const columnSlice: Slice = createSlice({
     },
     updateOneColumn: (state, action: PayloadAction<IColumn>) => {
       const index = state.columns.findIndex((column: IColumn) => column.id === action.payload.id);
-      state.columns[index] = action.payload;
+      if (index !== -1) {
+        state.columns[index] = action.payload;
+      }
     },
     setColumns: (state, action: PayloadAction<IColumn[]>) => {
       state.columns = action.payload;
     },
     updateTaskPositions: (state, action: PayloadAction<{id: number, pos: number[]}>) => {
       const index = state.columns.findIndex((column: IColumn) => column.id === action.payload.id);
-      state.columns[index].positions = action.payload.pos;
+      if (index !== -1) {
+        state.columns[index].positions = action.payload.pos;
+      }
     },
     setNewTaskPositionInArray: (state, action: PayloadAction<{columnId: number, taskId: number}>) => {
       const index = state.columns.findIndex((column: IColumn) => column.id === action.payload.columnId);
-      state.columns[index].positions.push(action.payload.taskId);
+      if (index !== -1) {
+        state.columns[index].positions.push(action.payload.taskId);
+      }
     },
     resetColumns: (state) => {
       state.columns = null;
@@ -46,8 +52,7 @@ export const columnSlice: Slice = createSlice({
       });
     },
     deleteColumn: (state, action: PayloadAction<{ id: number; }>) => {
-      const index = state.columns.findIndex((column: IColumn) => column.id === +action.payload);
-      state.columns.splice(index, 1);
+      state.columns = state.columns.filter((column: IColumn) => column.id !== +action.payload);
     },    
   },
 });

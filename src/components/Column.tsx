@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import plusIcon from '../img/plus.svg';
 import editIcon from '../img/edit.svg';
@@ -6,14 +6,15 @@ import { Task } from './Task';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ITask } from '../types/task';
 import { TaskCreateForm } from './TaskCreateForm';
-import { fetchAddTask, fetchEditTask, fetchMoveTask } from '../store/asyncActions/taskAction';
-import { getTasks, moveTask } from '../store/slicers/taskSlicer';
+import { fetchMoveTask } from '../store/asyncActions/taskAction';
+import { getTasks, moveTask, } from '../store/slicers/taskSlicer';
 import { ColumnsEditForm } from './ColumnEditForm';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { getColumns, updateTaskPositions } from '../store/slicers/columnSlicer';
 import { IColumn } from '../types/column';
 import { applyDrag, sortItemsByPositions } from '../services/utils/itemsOrder';
 import { fetchUpdateTaskPositions } from '../store/asyncActions/columnActions';
+import { socket } from '../services/api';
 
 interface ColumnProps {
   id: number;
@@ -44,31 +45,36 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
   };
 
   const sortHandler = () => {
-    const sortedPositions  = byDesc ? 
-    tasks.sort((a, b) => b.priority - a.priority).map(item => item.id) :
-    tasks.sort((a, b) => a.priority - b.priority).map(item => item.id);
+    const sortedPositions = byDesc ?
+      tasks.sort((a, b) => b.priority - a.priority).map(item => item.id) :
+      tasks.sort((a, b) => a.priority - b.priority).map(item => item.id);
     setByDesc(!byDesc);
-    dispatch(updateTaskPositions({id, pos: sortedPositions}));
-  }  
+    dispatch(updateTaskPositions({ id, pos: sortedPositions }));
+  }
 
   const getData = (title: string, priority: number) => {
     const columnId = id;
-    if (title) dispatch(fetchAddTask({ title, columnId, priority }));
+    if (title) {
+      socket.emit('task:add', { title, columnId, priority });
+      // dispatch(fetchAddTask({ title, columnId, priority }));
+    }
   };
 
   const onTaskDrop = (columnId: number, dropResult: DropResult) => {
     console.log('onTaskDrop:', dropResult);
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       const index = allColumns.findIndex(column => column.id === id);
-      const positions = allColumns[index].positions;    
+      const positions = allColumns[index].positions;
       const newPositions = applyDrag(positions, dropResult);
       console.log(`colId: ${columnId}, positions:\n${newPositions}`);
-      dispatch(updateTaskPositions({id: columnId, pos: newPositions})); // update positions in columns on frontend
+      dispatch(updateTaskPositions({ id: columnId, pos: newPositions })); // update positions in columns on frontend
       if (dropResult.addedIndex !== null) {
-        dispatch(moveTask({id: dropResult.payload.id, columnId,}));
-        dispatch(fetchMoveTask({id: dropResult.payload.id, columnId,}));
+        dispatch(moveTask({ id: dropResult.payload.id, columnId, }));
+        socket.emit('task:move', { id: dropResult.payload.id, columnId, });
+        // dispatch(fetchMoveTask({ id: dropResult.payload.id, columnId, }));
       }
-      dispatch(fetchUpdateTaskPositions({columnId, positions: newPositions})); // update positions in columns  on backend
+      socket.emit('column:updatePositions', { columnId, positions: newPositions });
+      // dispatch(fetchUpdateTaskPositions({ columnId, positions: newPositions })); // update positions in columns  on backend
     }
   };
 

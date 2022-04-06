@@ -1,4 +1,3 @@
-import { positions } from '@mui/system';
 import { createSlice, Slice, PayloadAction } from '@reduxjs/toolkit';
 import { ITask } from '../../types/task';
 import type { RootState } from '../store';
@@ -10,7 +9,6 @@ interface TaskState {
 const initialState = {
   tasks: [],
 } as TaskState;
-
 
 export const taskSlice: Slice = createSlice({
   name: 'task',
@@ -38,11 +36,11 @@ export const taskSlice: Slice = createSlice({
       });
     },
     deleteTask: (state, action: PayloadAction<number>) => {
-      const index = state.tasks.findIndex((task: { id: number; }) => task.id === action.payload);
-      state.tasks.splice(index, 1);
+      state.tasks = state.tasks.filter((task: { id: number; }) => task.id !== action.payload);
     },
     moveTask: (state, action: PayloadAction<{ id: number; columnId: number; }>) => {
-      state.tasks.find((task: { id: number; }) => task.id === action.payload.id).columnId = action.payload.columnId;
+      const task = state.tasks.find((task: { id: number; }) => task.id === action.payload.id);
+      task.columnId = action.payload.columnId;
     },
   },
 });

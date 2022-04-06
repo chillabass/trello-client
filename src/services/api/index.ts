@@ -11,17 +11,18 @@ const api = axios.create({
   }
 });
 
-export const socket = io(api.defaults.baseURL || 'http://localhost:5000', {
-  auth: {
-    token: `Bearer ${localStorage.getItem('token')}`,
-  },
-});
-
 api.interceptors.request.use(req => {
   if (req.headers) {
     req.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
   }
   return req;
 });
+
+export const socket = io(api.defaults.baseURL || 'http://localhost:5000', {
+  auth: {
+    token: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+
 
 export default api;

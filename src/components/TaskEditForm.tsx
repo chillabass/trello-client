@@ -11,6 +11,7 @@ import { useAppDispatch } from '../store/hooks';
 import { fetchDeleteTask, fetchEditTask } from '../store/asyncActions/taskAction';
 import { styled } from '@mui/styles';
 import { Typography } from '@mui/material';
+import { socket } from '../services/api';
 
 interface FormProps {
   open: boolean;
@@ -35,7 +36,8 @@ export const TaskEditForm: React.FC<FormProps> = ({open, setOpen, taskId, priori
 
   const handleDelete = () => {
     setOpen(false);
-    dispatch(fetchDeleteTask({id: taskId}));
+    // dispatch(fetchDeleteTask({id: taskId}));
+    socket.emit('task:delete', {id: taskId});
   };
 
   const handleClose = () => {
@@ -51,7 +53,8 @@ export const TaskEditForm: React.FC<FormProps> = ({open, setOpen, taskId, priori
     if (taskTitle?.value.trim()) data.title = taskTitle?.value.trim();
     if (prioritySlider?.innerText) data.priority = +prioritySlider?.innerText;
     if (taskDescription?.value) data.description = taskDescription?.value.trim();
-    dispatch(fetchEditTask(data));
+    // dispatch(fetchEditTask(data));
+    socket.emit('task:edit', data);
   };
 
   return (

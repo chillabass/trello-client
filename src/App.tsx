@@ -3,7 +3,7 @@ import './App.css';
 import { Header } from './components/Header';
 import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './hoc/PrivateRouter';
-import { useAppDispatch } from './store/hooks';
+import { useAppDispatch, useSocket } from './store/hooks';
 import { fetchGetUser } from './store/asyncActions/userActions';
 
 import { Mainpage } from './pages/Main';
@@ -19,6 +19,8 @@ export const App: React.FC = () => {
   useEffect(() => {
     dispatch(fetchGetUser());
   });
+
+  useSocket();
 
   return (
   <>

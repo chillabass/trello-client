@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAppDispatch } from '../store/hooks';
 import { fetchDeleteColumn, fetchEditColumn } from '../store/asyncActions/columnActions';
+import { socket } from '../services/api';
 
 interface FormProps {
   title: string;
@@ -28,7 +29,8 @@ export const ColumnsEditForm: React.FC<FormProps> = ({title, open, setOpen, colu
 
   const handleDelete = () => {
     setOpen(false);
-    dispatch(fetchDeleteColumn({id: columnId, deskId,}));
+    // dispatch(fetchDeleteColumn({id: columnId, deskId,}));
+    socket.emit('column:delete', {id: columnId, deskId,});
   };
 
   const handleClose = () => {
@@ -40,7 +42,8 @@ export const ColumnsEditForm: React.FC<FormProps> = ({title, open, setOpen, colu
     const columnTitle: HTMLInputElement | null = document.querySelector('#columnTitle');
     const data: IEditColumn = { id: columnId };
     if (columnTitle?.value.trim()) data.title = columnTitle?.value.trim();
-    dispatch(fetchEditColumn(data));
+    // dispatch(fetchEditColumn(data));
+    socket.emit('column:edit', data);
   };
 
   return (

@@ -5,15 +5,15 @@ import { BoardHeader } from '../components/BoardHeader';
 import { Column } from '../components/Column';
 import { CreateButton } from '../components/CreateButton';
 import { FormDialog as Form } from '../components/CreatingForm';
-import { fetchAddColumn, socketAddColumn } from '../store/asyncActions/columnActions';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { getDesks, updateColumnPositions } from '../store/slicers/deskSlicer';
+import { getDesks, updateColumnPositions, } from '../store/slicers/deskSlicer';
 import { IColumn } from '../types/column';
 import { IDesk } from '../types/desk';
-import { getColumns } from '../store/slicers/columnSlicer';
+import { getColumns, } from '../store/slicers/columnSlicer';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { applyDrag, sortItemsByPositions } from '../services/utils/itemsOrder';
-import { fetchUpdateColumnPositions } from '../store/asyncActions/deskActions';
+import { socket } from '../services/api';
+import { useSocket } from '../store/hooks';
 
 export const Deskpage: React.FC = () => {
   const location = useLocation();
@@ -38,20 +38,24 @@ export const Deskpage: React.FC = () => {
 
   const createColumnHandler = () => {
     setFormActive(true);
-  }
+  };
 
   const getData = (title: string | null | undefined) => {
-    if (title) dispatch(socketAddColumn({ title, deskId }));
+    if (title) {
+      socket.emit('column:add', { title, deskId });
+      // dispatch(socketAddColumn({ title, deskId }));
+    }
   }
 
   const onColumnDrop = (dropResult: DropResult) => {
     console.log('onColumnDrop:', dropResult);
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       const index = desks.findIndex(desk => desk.id === deskId);
-      positions = desks[index].positions;    
+      positions = desks[index].positions;
       const newPositions = applyDrag(positions, dropResult);
-      dispatch(updateColumnPositions({id: deskId, pos: newPositions})); // update on frontend
-      dispatch(fetchUpdateColumnPositions({deskId, positions: newPositions})); // update on backend
+      dispatch(updateColumnPositions({ id: deskId, pos: newPositions })); // update on frontend
+      socket.emit('desk:updatePositions', { deskId, positions: newPositions });
+      // dispatch(fetchUpdateColumnPositions({ deskId, positions: newPositions })); // update on backend
     }
   };
 
@@ -66,7 +70,7 @@ export const Deskpage: React.FC = () => {
         <Container
           orientation="horizontal"
           dragClass="card-ghost"
-          dropClass="card-ghost-drop"  
+          dropClass="card-ghost-drop"
           onDrop={e => onColumnDrop(e)}
           getChildPayload={index => getColumnPayload(index)}
           dragHandleSelector=".column-drag-handle"
@@ -78,13 +82,13 @@ export const Deskpage: React.FC = () => {
         >
           {sortItemsByPositions(columns, positions).map((column: IColumn) => {
             return (
-            <Draggable key={column.id}>
-              <Column
-                title={column.title}
-                id={column.id}
-                deskId={deskId}
-              />
-            </Draggable>
+              <Draggable key={column.id}>
+                <Column
+                  title={column.title}
+                  id={column.id}
+                  deskId={deskId}
+                />
+              </Draggable>
             )
           }
           )}

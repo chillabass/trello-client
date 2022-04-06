@@ -27,29 +27,29 @@ export const fetchAddColumn = createAsyncThunk(
   }
 );
 
-socket.on('column:add', (data: { message: string; column: IColumn; }) => {
-  // dispatch(setOneColumn(response.data.column));
-  // dispatch(setNewColumnPositionInArray({deskId: response.data.column.deskId, columnId: response.data.column.id}));
-});
+// socket.on('column:add', (data: { message: string; column: IColumn; }) => {
+//   // dispatch(setOneColumn(response.data.column));
+//   // dispatch(setNewColumnPositionInArray({deskId: response.data.column.deskId, columnId: response.data.column.id}));
+// });
 
-export const socketAddColumn = createAsyncThunk<
-string,
-{ deskId: number; title: string; },
-{
-  dispatch: AppDispatch,
-  store: RootState
-}
->(
-  'column/socketAddColumn',
-  async (data, thunkApi) => {
-    try {
-      socket.emit('column:add', data);
-    } catch (e: any) {
-      alert(e.response?.data);
-      return rejectWithValue(e.response?.data);
-    }
-  }
-);
+// export const socketAddColumn = createAsyncThunk<
+// string, // возвращаемое значение
+// { deskId: number; title: string; }, // то, что принимаем параметрами
+// {
+//   dispatch: AppDispatch,  // thunkApi
+//   store: RootState,
+// }
+// >(
+//   'column/socketAddColumn',
+//   async (data, thunkApi) => {
+//     try {
+//       socket.emit('column:add', data);
+//     } catch (e: any) {
+//       alert(e.response?.data);
+//       return thunkApi.rejectWithValue(e.response?.data);
+//     }
+//   }
+// );
 
 
 export const fetchEditColumn = createAsyncThunk(
