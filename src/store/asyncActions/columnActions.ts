@@ -4,6 +4,7 @@ import { IColumn } from '../../types/column';
 import { deleteColumn, editColumn, setColumns, setOneColumn, updateOneColumn } from '../slicers/columnSlicer';
 import { setNewColumnPositionInArray, updateOneDesk } from '../slicers/deskSlicer';
 import { AppDispatch, RootState } from '../store';
+import { IDesk } from '../../types/desk';
 
 
 export const fetchAddColumn = createAsyncThunk(
@@ -69,7 +70,12 @@ export const fetchDeleteColumn = createAsyncThunk(
   'column/fetchDeleteColumn',
   async (data: { id: number; deskId: number; }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.post<{ message: string; deleted: boolean; id: number, desk: { positions: number[] } }>('/columns/delete', data);
+      const response = await api.post<{ 
+        message: string; 
+        deleted: boolean; 
+        id: number, 
+        desk: IDesk
+    }>('/columns/delete', data);
       if (response.data.deleted) {
         dispatch(deleteColumn(response.data.id));
         dispatch(updateOneDesk(response.data.desk));

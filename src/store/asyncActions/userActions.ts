@@ -21,8 +21,8 @@ export const fetchSignUp = createAsyncThunk(
       dispatch(setUser(user));
       dispatch(setToken(token));
       dispatch(setIsAuth(isAuth));
-      dispatch(resetDesks([]));
-      dispatch(resetColumns([]));
+      dispatch(resetDesks());
+      dispatch(resetColumns());
       dispatch(resetTasks());
     } catch (e: any) {
       alert(e.response?.data);

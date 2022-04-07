@@ -47,9 +47,7 @@ export const useSocket = () => {
       message: string;
       deleted: boolean;
       id: number,
-      desk: {
-        positions: number[]
-      }
+      desk: IDesk
     }) => {
     if (data.deleted) {
       dispatch(deleteColumn(data.id));

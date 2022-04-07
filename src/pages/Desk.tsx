@@ -21,7 +21,7 @@ export const Deskpage: React.FC = () => {
   const [formActive, setFormActive] = useState(false);
 
   // Получаем массив всех досок
-  const desks: IDesk[] = useAppSelector(getDesks);
+  const desks = useAppSelector(getDesks);
   // Из url получаем id доски
   const deskId = +location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
   // По id доски получаем ее название
@@ -30,7 +30,7 @@ export const Deskpage: React.FC = () => {
   let positions = desks[deskId].positions;
 
   // Получаем массив всех колонок
-  const allColumns: IColumn[] = useAppSelector(getColumns);
+  const allColumns = useAppSelector(getColumns);
   // Получаем колонки, которые относятся к нашей доске
   const columns: IColumn[] = [];
   // const columns: IColumn[] = allColumns.filter((column: IColumn) => column.deskId === deskId);

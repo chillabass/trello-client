@@ -130,7 +130,6 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
       >
         {
           tasksList.map((task: ITask) => {
-            console.log('hooyak', task)
             return (
               <Draggable key={task.id}>
                 <Task
