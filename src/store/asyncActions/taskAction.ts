@@ -1,4 +1,4 @@
-import api from '../../services/api';
+import api from '../../api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITask } from '../../types/task';
 import { deleteTask, editTask, moveTask, setOneTask } from '../slicers/taskSlicer';

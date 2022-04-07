@@ -1,4 +1,4 @@
-import api, { socket } from '../../services/api';
+import api, { socket } from '../../api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IColumn } from '../../types/column';
 import { deleteColumn, editColumn, setColumns, setOneColumn, updateOneColumn } from '../slicers/columnSlicer';

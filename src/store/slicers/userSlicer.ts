@@ -17,16 +17,16 @@ const initialState = {
   isAuth: !!localStorage.getItem('isAuth'),
 } as UserState;
 
-export const userSlice: Slice = createSlice({
+export const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    signout: (state) => {
-      state.currentUser = {};
-      state.isAuth = false;
-      state.token = '';
-      localStorage.removeItem('token');
-    },
+    // signout: (state) => {
+    //   state.currentUser = {};
+    //   state.isAuth = false;
+    //   state.token = '';
+    //   localStorage.removeItem('token');
+    // },
     setUser: (state, action: PayloadAction<IUserData>) => {
       state.currentUser = action.payload;
     },
@@ -70,7 +70,6 @@ export const userSlice: Slice = createSlice({
 });
 
 export const { 
-  auth,
   signout,
   setUser,
   setToken,

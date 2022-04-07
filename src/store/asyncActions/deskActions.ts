@@ -1,4 +1,4 @@
-import api from '../../services/api';
+import api from '../../api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IDesk } from '../../types/desk';
 import { deleteDesk, editDesk, setOneDesk, updateOneDesk } from '../slicers/deskSlicer';

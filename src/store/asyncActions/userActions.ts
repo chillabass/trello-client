@@ -1,4 +1,4 @@
-import api from '../../services/api';
+import api from '../../api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IUser, IUserData } from '../../types/user';
 import { IAvatar } from '../../types/avatar';
