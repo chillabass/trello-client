@@ -1,14 +1,11 @@
 import api from '../../api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IUser, IUserData } from '../../types/user';
 import { IAvatar } from '../../types/avatar';
-import { setIsAuth, setToken, setUser } from '../slicers/userSlicer';
-import { resetDesks, setDesks } from '../slicers/deskSlicer';
-import { IDesk } from '../../types/desk';
-import { IColumn } from '../../types/column';
-import { resetColumns, setColumns } from '../slicers/columnSlicer';
-import { ITask } from '../../types/task';
-import { resetTasks, setTasks } from '../slicers/taskSlicer';
+import { IUser, IUserData } from '../../types/user';
+import { userActions } from './sliceUser';
+import { deskActions, IDeskObject } from '../sliceDesk/sliceDesk';
+import { columnActions, IColumnObject } from '../sliceColumn/sliceColumn';
+import { taskActions, ITaskObject } from '../sliceTask/sliceTask';
 
 export const fetchSignUp = createAsyncThunk(
   'users/fetchSignUp',
@@ -18,12 +15,12 @@ export const fetchSignUp = createAsyncThunk(
       const user: IUser = response.data.user;
       const token: string = response.data.token;
       const isAuth: boolean = !!user;
-      dispatch(setUser(user));
-      dispatch(setToken(token));
-      dispatch(setIsAuth(isAuth));
-      dispatch(resetDesks());
-      dispatch(resetColumns());
-      dispatch(resetTasks());
+      dispatch(userActions.setUser(user));
+      dispatch(userActions.setToken(token));
+      dispatch(userActions.setIsAuth(isAuth));
+      dispatch(deskActions.resetDesks());
+      dispatch(columnActions.resetColumns());
+      dispatch(taskActions.resetTasks());
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -39,15 +36,16 @@ export const fetchSignIn = createAsyncThunk(
       const user: IUser = response.data.user;
       const token: string = response.data.token;
       const isAuth: boolean = !!user;
-      const desks: IDesk[] = response.data.user.desks;
-      const columns: IColumn[] = response.data.user.columns;
-      const tasks: ITask[] = response.data.user.tasks;
-      dispatch(setUser(user));
-      dispatch(setToken(token));
-      dispatch(setIsAuth(isAuth));
-      dispatch(setDesks(desks));
-      dispatch(setColumns(columns));
-      dispatch(setTasks(tasks));
+      const desks: IDeskObject = response.data.user.desks;
+      const columns: IColumnObject = response.data.user.columns;
+      const tasks: ITaskObject = response.data.user.tasks;
+
+      dispatch(userActions.setUser(user));
+      dispatch(userActions.setToken(token));
+      dispatch(userActions.setIsAuth(isAuth));
+      dispatch(deskActions.setDesks(desks));
+      dispatch(columnActions.setColumns(columns));
+      dispatch(taskActions.setTasks(tasks));
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -85,21 +83,22 @@ export const fetchChangeAvatar = createAsyncThunk(
 
 export const fetchGetUser = createAsyncThunk(
   'users/fetchGetUser',
-  async (_: void, { dispatch, rejectWithValue}) => {
+  async (_: void, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.get('/users/auth');
       const user: IUser = response.data.user;
       const token: string = response.data.token;
       const isAuth: boolean = !!user;
-      const desks: IDesk[] = response.data.user.desks;
-      const columns: IColumn[] = response.data.user.columns;
-      const tasks: ITask[] = response.data.user.tasks;
-      dispatch(setUser(user));
-      dispatch(setToken(token));
-      dispatch(setIsAuth(isAuth));
-      dispatch(setDesks(desks));
-      dispatch(setColumns(columns));
-      dispatch(setTasks(tasks));
+      const desks: IDeskObject = response.data.user.desks;
+      const columns: IColumnObject = response.data.user.columns;
+      const tasks: ITaskObject = response.data.user.tasks;
+
+      dispatch(userActions.setUser(user));
+      dispatch(userActions.setToken(token));
+      dispatch(userActions.setIsAuth(isAuth));
+      dispatch(deskActions.setDesks(desks));
+      dispatch(columnActions.setColumns(columns));
+      dispatch(taskActions.setTasks(tasks));
     } catch (e: any) {
       return rejectWithValue(e.response?.data);
     }

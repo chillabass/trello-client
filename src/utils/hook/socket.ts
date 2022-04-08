@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { socket } from '../../api';
-import { deleteColumn, editColumn, setNewTaskPositionInArray, setOneColumn, updateOneColumn } from '../../store/slicers/columnSlicer';
-import { setNewColumnPositionInArray, updateOneDesk } from '../../store/slicers/deskSlicer';
-import { deleteTask, editTask, moveTask, setOneTask } from '../../store/slicers/taskSlicer';
+import { socket } from '../../api/socket';
+import { columnActions } from '../../store/sliceColumn/sliceColumn';
+import { deskActions } from '../../store/sliceDesk/sliceDesk';
+import { taskActions } from '../../store/sliceTask/sliceTask';
 import { IColumn } from '../../types/column';
 import { IDesk } from '../../types/desk';
 import { ITask } from '../../types/task';
@@ -12,32 +12,32 @@ export const useSocket = () => {
   const dispatch = useAppDispatch();
 
   const deskUpdatePositionsHandler = (
-    data: { 
-      desk: IDesk; 
+    data: {
+      desk: IDesk;
     }) => {
-    dispatch(updateOneDesk(data.desk));
+    dispatch(deskActions.setOneDesk(data.desk));
   };
 
   const addColumnHandler = (
-    data: { 
-      message: string; 
-      column: IColumn; 
+    data: {
+      message: string;
+      column: IColumn;
     }) => {
-    dispatch(setOneColumn(data.column));
-    dispatch(setNewColumnPositionInArray({ 
-      deskId: data.column.deskId, 
-      columnId: data.column.id 
+    dispatch(columnActions.setOneColumn(data.column));
+    dispatch(deskActions.setNewColumnPositionInArray({
+      deskId: data.column.deskId,
+      columnId: data.column.id
     }));
   };
 
   const editColumnHandler = (
-    data: { 
-      message: string; 
-      column: IColumn; 
+    data: {
+      message: string;
+      column: IColumn;
     }) => {
-    dispatch(editColumn(data.column));
+    dispatch(columnActions.setOneColumn(data.column));
   };
-  
+
   const deleteColumnHandler = (
     data: {
       message: string;
@@ -46,45 +46,46 @@ export const useSocket = () => {
       desk: IDesk
     }) => {
     if (data.deleted) {
-      dispatch(deleteColumn(data.id));
-      dispatch(updateOneDesk(data.desk));
+      dispatch(deskActions.setOneDesk(data.desk));
+      dispatch(columnActions.deleteColumn(data.id));
     }
   };
-  
+
   const columnUpdatePositionsHandler = (
-    data: { 
-      message: string; 
-      column: IColumn 
+    data: {
+      message: string;
+      column: IColumn
     }) => {
-    dispatch(updateOneColumn(data.column));
+    dispatch(columnActions.setOneColumn(data.column));
   };
-  
+
   const addTaskHandler = (
-    data: { 
-      message: string; 
-      task: ITask 
+    data: {
+      message: string;
+      task: ITask
     }) => {
-    dispatch(setOneTask(data.task));
-    dispatch(setNewTaskPositionInArray({ columnId: data.task.columnId, taskId: data.task.id, }))
+    dispatch(taskActions.setOneTask(data.task));
+    dispatch(columnActions.setNewTaskPositionInArray({ columnId: data.task.columnId, taskId: data.task.id, }))
   };
 
   const editTaskHandler = (
-    data: { 
-      message: string; 
-      task: ITask 
+    data: {
+      message: string;
+      task: ITask
     }) => {
-    dispatch(editTask(data.task));
+    dispatch(taskActions.setOneTask(data.task));
   };
 
   const deleteTaskHandler = (
-    data: { 
-      message: string; 
-      deleted: boolean; 
-      id: number; 
+    data: {
+      message: string;
+      deleted: boolean;
+      id: number;
+      column: IColumn;
     }) => {
-    console.log('DELETED', data)
     if (data.deleted) {
-      dispatch(deleteTask(data.id));
+      dispatch(columnActions.setOneColumn(data.column));
+      dispatch(taskActions.deleteTask(data.id));
     }
   };
 
@@ -94,7 +95,7 @@ export const useSocket = () => {
       id: number;
       columnId: number;
     }) => {
-      dispatch(moveTask({id: data.id, columnId: data.columnId}));
+    dispatch(taskActions.moveTask({ id: data.id, columnId: data.columnId }));
   };
 
   useEffect(() => {
@@ -107,15 +108,17 @@ export const useSocket = () => {
     socket.on('task:edit', editTaskHandler);
     socket.on('task:delete', deleteTaskHandler);
     socket.on('task:move', moveTaskHandler);
+
     return () => {
-    socket.off('desk:updatePositions', deskUpdatePositionsHandler);
-    socket.off('column:add', addColumnHandler);
-    socket.off('column:edit', editColumnHandler);
-    socket.off('column:delete', deleteColumnHandler);
-    socket.on('column:updatePositions', columnUpdatePositionsHandler);
-    socket.off('task:add', addTaskHandler);
-    socket.off('task:edit', editTaskHandler);
-    socket.off('task:move', moveTaskHandler);
+      socket.off('desk:updatePositions', deskUpdatePositionsHandler);
+      socket.off('column:add', addColumnHandler);
+      socket.off('column:edit', editColumnHandler);
+      socket.off('column:delete', deleteColumnHandler);
+      socket.off('column:updatePositions', columnUpdatePositionsHandler);
+      socket.off('task:add', addTaskHandler);
+      socket.off('task:edit', editTaskHandler);
+      socket.off('task:delete', deleteTaskHandler);
+      socket.off('task:move', moveTaskHandler);
     };
   }, []);
-}
+};

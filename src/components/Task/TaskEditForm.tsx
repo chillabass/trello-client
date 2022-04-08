@@ -8,12 +8,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { styled } from '@mui/styles';
 import { Typography } from '@mui/material';
-import { socket }  from '../../api';
+import { socket } from '../../api/socket';
 
 interface FormProps {
   open: boolean;
   setOpen: (flag: boolean) => void;
   taskId: number;
+  columnId: number;
   priority: number;
   title: string;
   description: string;
@@ -28,10 +29,10 @@ interface IEditTask {
   position?: number;
 };
 
-export const TaskEditForm: React.FC<FormProps> = ({open, setOpen, taskId, priority, title, description}) => {
+export const TaskEditForm: React.FC<FormProps> = ({ open, setOpen, taskId, columnId, priority, title, description }) => {
   const handleDelete = () => {
     setOpen(false);
-    socket.emit('task:delete', {id: taskId});
+    socket.emit('task:delete', { id: taskId, columnId, });
   };
 
   const handleClose = () => {
@@ -51,52 +52,52 @@ export const TaskEditForm: React.FC<FormProps> = ({open, setOpen, taskId, priori
   };
 
   return (
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Task</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            id="taskTitle"
-            label="Title"
-            type="text"
-            fullWidth
-            defaultValue={title}
-            variant="standard"
-            inputProps={{
-              maxLength: 255,
-            }}
-          />
-          <TextField
-            sx={{marginTop: '19px;'}}
-            id="taskDescription"
-            label="Description"
-            multiline
-            type="text"
-            fullWidth
-            defaultValue={description}
-            variant="standard"
-            inputProps={{
-              maxLength: 255,
-            }}
-          />
-          <Typography 
-            sx={{marginTop: '19px;'}}
-            gutterBottom>Priority</Typography>
-          <PrettoSlider
-            id='prioritySlider'
-            valueLabelDisplay="auto"
-            aria-label="pretto slider"
-            defaultValue={priority}
-            min={1}
-            max={5}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button color="error" variant="text" onClick={handleDelete}>Delete</Button>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleEdit}>Edit</Button>
-        </DialogActions>
-      </Dialog>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Edit Task</DialogTitle>
+      <DialogContent>
+        <TextField
+          autoFocus
+          id="taskTitle"
+          label="Title"
+          type="text"
+          fullWidth
+          defaultValue={title}
+          variant="standard"
+          inputProps={{
+            maxLength: 255,
+          }}
+        />
+        <TextField
+          sx={{ marginTop: '19px;' }}
+          id="taskDescription"
+          label="Description"
+          multiline
+          type="text"
+          fullWidth
+          defaultValue={description}
+          variant="standard"
+          inputProps={{
+            maxLength: 255,
+          }}
+        />
+        <Typography
+          sx={{ marginTop: '19px;' }}
+          gutterBottom>Priority</Typography>
+        <PrettoSlider
+          id='prioritySlider'
+          valueLabelDisplay="auto"
+          aria-label="pretto slider"
+          defaultValue={priority}
+          min={1}
+          max={5}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button color="error" variant="text" onClick={handleDelete}>Delete</Button>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleEdit}>Edit</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

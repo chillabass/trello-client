@@ -4,12 +4,10 @@ import plusIcon from '../../assets/icon/plus.svg';
 import { Task } from '../Task/Task';
 import { ITask } from '../../types/task';
 import { TaskCreateForm } from '../TaskCreateForm';
-import { getTasks, moveTask } from '../../store/slicers/taskSlicer';
 import { ColumnsEditForm } from './ColumnEditForm';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { getColumns, updateTaskPositions } from '../../store/slicers/columnSlicer';
 import { applyDrag, sortItemsByPositions } from '../../utils/items/itemsOrder';
-import { socket } from '../../api';
+import { socket } from '../../api/socket';
 import {
   StyledColumn,
   StyledColumnButton,
@@ -18,9 +16,11 @@ import {
   StyledColumnTitle,
   StyledFooter,
   StyledIcon,
-  StyledMenu 
+  StyledMenu
 } from './Column.styles';
 import { useAppDispatch, useAppSelector } from '../../utils/hook/redux';
+import { columnActions } from '../../store/sliceColumn/sliceColumn';
+import { taskActions } from '../../store/sliceTask/sliceTask';
 
 interface ColumnProps {
   id: number;
@@ -35,11 +35,11 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
   const [editFormActive, setEditFormActive] = useState(false);
   const [byDesc, setByDesc] = useState(true);
 
-  const allColumns = useAppSelector(getColumns);
+  const allColumns = useAppSelector(state => state.columns.columns);
   const currentColumn = allColumns[id];
   const positions = currentColumn.positions;
 
-  const allTasks = useAppSelector(getTasks);
+  const allTasks = useAppSelector(state => state.tasks.tasks);
   const tasks = positions.map((pos: number) => allTasks[pos]);
 
   const addTaskHandler = () => {
@@ -55,7 +55,7 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
       tasks.sort((a, b) => b.priority - a.priority).map(item => item.id) :
       tasks.sort((a, b) => a.priority - b.priority).map(item => item.id);
     setByDesc(!byDesc);
-    dispatch(updateTaskPositions({ id, pos: sortedPositions }));
+    dispatch(columnActions.updateTaskPositions({ id, pos: sortedPositions }));
   }
 
   const getData = (title: string, priority: number) => {
@@ -71,13 +71,13 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
       const newPositions = applyDrag(positions, dropResult);
 
       // update positions in columns on frontend
-      dispatch(updateTaskPositions({
+      dispatch(columnActions.updateTaskPositions({
         id: columnId,
         pos: newPositions
-      })); 
+      }));
 
       if (dropResult.addedIndex !== null) {
-        dispatch(moveTask({
+        dispatch(taskActions.moveTask({
           id: dropResult.payload.id,
           columnId,
         }));

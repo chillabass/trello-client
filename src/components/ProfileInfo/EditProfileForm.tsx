@@ -13,7 +13,7 @@ interface FormProps {
   getData: (data: IEditData) => void;
 };
 
-export const EditFormDialog: React.FC<FormProps> = ({open, setOpen, getData, }) => {
+export const EditFormDialog: React.FC<FormProps> = ({ open, setOpen, getData, }) => {
 
   const handleClose = () => {
     setOpen(false);

@@ -18,14 +18,14 @@ interface FormProps {
 };
 
 export const TaskCreateForm: React.FC<FormProps> = ({
-    open,
-    setOpen,
-    getData,
-    dialogTitle,
-    dialogContentText,
-    label 
-  }) => {
-    
+  open,
+  setOpen,
+  getData,
+  dialogTitle,
+  dialogContentText,
+  label
+}) => {
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -58,9 +58,9 @@ export const TaskCreateForm: React.FC<FormProps> = ({
             maxLength: 255,
           }}
         />
-        <Typography 
-            sx={{marginTop: '19px;'}}
-            gutterBottom>Priority</Typography>
+        <Typography
+          sx={{ marginTop: '19px;' }}
+          gutterBottom>Priority</Typography>
         <PrettoSlider
           id='prioritySlider'
           valueLabelDisplay="auto"

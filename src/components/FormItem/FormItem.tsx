@@ -8,12 +8,13 @@ interface FormItemProps {
 };
 
 export const FormItem: React.FC<FormItemProps> = ({ label, inputType, name }: FormItemProps) => {
-return (
-  <StyledFormItem>
-    <StyledLabel>{label}</StyledLabel>
-    <StyledInput 
-      name={name} 
-      type={inputType}
-    />
-  </StyledFormItem>
-)};
+  return (
+    <StyledFormItem>
+      <StyledLabel>{label}</StyledLabel>
+      <StyledInput
+        name={name}
+        type={inputType}
+      />
+    </StyledFormItem>
+  )
+};

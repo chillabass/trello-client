@@ -1,17 +1,16 @@
 import React, { useMemo, useState } from 'react';
-import styled from 'styled-components';
 import { useLocation } from 'react-router';
-import { BoardHeader } from '../components/BoardHeader/BoardHeader';
-import { Column } from '../components/Column/Column';
-import { CreateButton } from '../components/CreateButton/CreateButton';
-import { FormDialog as Form } from '../components/CreatingForm/CreatingForm';
-import { getDesks, updateColumnPositions, } from '../store/slicers/deskSlicer';
-import { IColumn } from '../types/column';
-import { getColumns, } from '../store/slicers/columnSlicer';
+import { BoardHeader } from '../../components/BoardHeader/BoardHeader';
+import { Column } from '../../components/Column/Column';
+import { CreateButton } from '../../components/CreateButton/CreateButton';
+import { FormDialog as Form } from '../../components/CreatingForm/CreatingForm';
+import { IColumn } from '../../types/column';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { applyDrag, sortItemsByPositions } from '../utils/items/itemsOrder';
-import { socket } from '../api';
-import { useAppDispatch, useAppSelector } from '../utils/hook/redux';
+import { applyDrag, sortItemsByPositions } from '../../utils/items/itemsOrder';
+import { socket } from '../../api/socket';
+import { useAppDispatch, useAppSelector } from '../../utils/hook/redux';
+import { StyledColumnsWrapper } from './Desk.styles';
+import { deskActions } from '../../store/sliceDesk/sliceDesk';
 
 export const Deskpage: React.FC = () => {
   const location = useLocation();
@@ -19,13 +18,13 @@ export const Deskpage: React.FC = () => {
 
   const [formActive, setFormActive] = useState(false);
 
-  const desks = useAppSelector(getDesks);
+  const desks = useAppSelector(state => state.desks.desks);
   const deskId = +location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
   const deskTitle: string = desks[deskId].title;
 
   let positions = desks[deskId].positions;
 
-  const allColumns = useAppSelector(getColumns);
+  const allColumns = useAppSelector(state => state.columns.columns);
   const columns: IColumn[] = [];
 
   positions.map((pos: number) => columns.push(allColumns[pos]));
@@ -41,11 +40,10 @@ export const Deskpage: React.FC = () => {
   }
 
   const onColumnDrop = (dropResult: DropResult) => {
-    console.log('onColumnDrop:', dropResult);
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       positions = desks[deskId].positions;
       const newPositions = applyDrag(positions, dropResult);
-      dispatch(updateColumnPositions({ id: deskId, pos: newPositions })); // update on frontend
+      dispatch(deskActions.updateColumnPositions({ id: deskId, pos: newPositions })); // update on frontend
       socket.emit('desk:updatePositions', { deskId, positions: newPositions });
     }
   };
@@ -101,10 +99,3 @@ export const Deskpage: React.FC = () => {
     </>
   )
 };
-
-
-const StyledColumnsWrapper = styled.div`
-  display: flex;
-  overflow-x: auto;
-`;
-

@@ -5,8 +5,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { fetchDeleteDesk, fetchEditDesk } from '../../store/asyncActions/deskActions';
 import { useAppDispatch } from '../../utils/hook/redux';
+import { fetchDeleteDesk, fetchEditDesk } from '../../store/sliceDesk/thunkDesk';
 
 interface FormProps {
   title: string;
@@ -15,7 +15,7 @@ interface FormProps {
   id: number;
 };
 
-export const DeskEditForm: React.FC<FormProps> = ({title, open, setOpen, id}) => {
+export const DeskEditForm: React.FC<FormProps> = ({ title, open, setOpen, id }) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = (e: SyntheticEvent) => {
@@ -33,7 +33,7 @@ export const DeskEditForm: React.FC<FormProps> = ({title, open, setOpen, id}) =>
     e.preventDefault();
     setOpen(false);
     const deskTitle: HTMLInputElement | null = document.querySelector('#deskTitle');
-    const data = { 
+    const data = {
       id,
       title: deskTitle?.value.trim(),
     };
@@ -41,28 +41,28 @@ export const DeskEditForm: React.FC<FormProps> = ({title, open, setOpen, id}) =>
   };
 
   return (
-      <Dialog 
-        onClick={e => e.preventDefault()} 
-        open={open} 
-        onClose={handleClose}>
-        <DialogTitle>Edit Desk</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            defaultValue={title}
-            margin="dense"
-            id="deskTitle"
-            label='Title'
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button color="error" variant="text" onClick={handleDelete}>Delete</Button>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleEdit}>Edit</Button>
-        </DialogActions>
-      </Dialog>
+    <Dialog
+      onClick={e => e.preventDefault()}
+      open={open}
+      onClose={handleClose}>
+      <DialogTitle>Edit Desk</DialogTitle>
+      <DialogContent>
+        <TextField
+          autoFocus
+          defaultValue={title}
+          margin="dense"
+          id="deskTitle"
+          label='Title'
+          type="text"
+          fullWidth
+          variant="standard"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button color="error" variant="text" onClick={handleDelete}>Delete</Button>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleEdit}>Edit</Button>
+      </DialogActions>
+    </Dialog>
   );
 };

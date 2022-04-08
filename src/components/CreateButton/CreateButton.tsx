@@ -7,13 +7,11 @@ interface ButtonProps {
   onClick: (event: SyntheticEvent) => void;
 };
 
-export const CreateButton: React.FC<ButtonProps> = ({title, onClick}) => {
+export const CreateButton: React.FC<ButtonProps> = ({ title, onClick }) => {
   return (
-    <StyledButton 
-        onClick={onClick}
-      >
-        <StyledIcon src={plusIcon} alt="add_icon" />
-        {title}
+    <StyledButton onClick={onClick}>
+      <StyledIcon src={plusIcon} alt="add_icon" />
+      {title}
     </StyledButton>
   );
 };

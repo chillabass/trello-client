@@ -12,7 +12,7 @@ interface FormProps {
   getData: (data: IAvatar) => void;
 };
 
-export const FileFormDialog: React.FC<FormProps> = ({open, setOpen, getData, }) => {
+export const FileFormDialog: React.FC<FormProps> = ({ open, setOpen, getData, }) => {
   const avatar: IAvatar = {
     name: '',
     file: '',
@@ -31,7 +31,7 @@ export const FileFormDialog: React.FC<FormProps> = ({open, setOpen, getData, }) 
 
   const handleUpload = () => {
     handleClose();
-    if (avatar) { 
+    if (avatar) {
       getData(avatar);
     }
   };
@@ -41,10 +41,10 @@ export const FileFormDialog: React.FC<FormProps> = ({open, setOpen, getData, }) 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Load file</DialogTitle>
         <DialogContent>
-          <input 
+          <input
             type="file"
             accept='.jpg,.jpeg,.png'
-            onChange={handleChangeFile}     
+            onChange={handleChangeFile}
           />
         </DialogContent>
         <DialogActions>

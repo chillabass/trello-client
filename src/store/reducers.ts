@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import columnReducer from './slicers/columnSlicer';
-import deskReducer from './slicers/deskSlicer';
-import taskReducer from './slicers/taskSlicer';
-import userReducer from './slicers/userSlicer';
+import { columnReducer } from './sliceColumn/sliceColumn';
+import { deskReducer } from './sliceDesk/sliceDesk';
+import { taskReducer } from './sliceTask/sliceTask';
+import { userReducer } from './sliceUser/sliceUser';
 
 export const rootReducer = combineReducers({
   users: userReducer,

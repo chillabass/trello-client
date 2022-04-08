@@ -10,14 +10,14 @@ interface TaskProps {
   priority: number;
 };
 
-export const Task: React.FC<TaskProps> = ({ title, taskId, priority, description }) => {
+export const Task: React.FC<TaskProps> = ({ title, taskId, columnId, priority, description }) => {
   const [taskEditActive, setTaskEditActive] = useState(false);
 
   const onClickHandler = () => {
     setTaskEditActive(true);
   }
 
-  type ColorType = {[key: number]: string;}
+  type ColorType = { [key: number]: string; }
   const Colors: ColorType = {
     1: 'initial;',
     2: '#6bda21;',
@@ -26,7 +26,7 @@ export const Task: React.FC<TaskProps> = ({ title, taskId, priority, description
     5: '#f90000;',
   };
 
-  return (    
+  return (
     <StyledTask
       color={Colors[priority]}
     >
@@ -35,14 +35,15 @@ export const Task: React.FC<TaskProps> = ({ title, taskId, priority, description
         onClick={onClickHandler}
       />
       <StyledParagraph>{title}</StyledParagraph>
-    <TaskEditForm 
-      open={taskEditActive}
-      setOpen={setTaskEditActive}
-      taskId={taskId}
-      priority={priority}
-      title={title}
-      description={description}
-    />
+      <TaskEditForm
+        open={taskEditActive}
+        setOpen={setTaskEditActive}
+        taskId={taskId}
+        columnId={columnId}
+        priority={priority}
+        title={title}
+        description={description}
+      />
     </StyledTask>
   );
 };

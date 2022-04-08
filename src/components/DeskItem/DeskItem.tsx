@@ -25,7 +25,7 @@ export const CreateItem: React.FC<ItemProps> = ({ title, href }) => {
         className='desk-overlay'
         onClick={onClickEditHandler}
       />
-      <DeskEditForm 
+      <DeskEditForm
         title={title}
         id={+href}
         open={editFormActive}
