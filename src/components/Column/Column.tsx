@@ -21,6 +21,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../utils/hook/redux';
 import { columnActions } from '../../store/sliceColumn/sliceColumn';
 import { taskActions } from '../../store/sliceTask/sliceTask';
+import { COLUMN_UPDATE_POSITIONS, TASK_ADD, TASK_MOVE } from '../../utils/constants/socketEventTypes';
 
 interface ColumnProps {
   id: number;
@@ -61,7 +62,7 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
   const getData = (title: string, priority: number) => {
     const columnId = id;
     if (title) {
-      socket.emit('task:add', { title, columnId, priority });
+      socket.emit(TASK_ADD, { title, columnId, priority });
     }
   };
 
@@ -81,10 +82,10 @@ export const Column: React.FC<ColumnProps> = ({ id, deskId, title }) => {
           id: dropResult.payload.id,
           columnId,
         }));
-        socket.emit('task:move', { id: dropResult.payload.id, columnId, });
+        socket.emit(TASK_MOVE, { id: dropResult.payload.id, columnId, });
       }
       // update positions in columns  on backend
-      socket.emit('column:updatePositions', { columnId, positions: newPositions });
+      socket.emit(COLUMN_UPDATE_POSITIONS, { columnId, positions: newPositions });
     }
   };
 

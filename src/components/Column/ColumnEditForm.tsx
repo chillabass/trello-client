@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { socket } from '../../api/socket';
+import { COLUMN_DELETE, COLUMN_EDIT } from '../../utils/constants/socketEventTypes';
 
 interface FormProps {
   title: string;
@@ -26,7 +27,7 @@ export const ColumnsEditForm: React.FC<FormProps> = ({title, open, setOpen, colu
 
   const handleDelete = () => {
     setOpen(false);
-    socket.emit('column:delete', {id: columnId, deskId,});
+    socket.emit(COLUMN_DELETE, {id: columnId, deskId,});
   };
 
   const handleClose = () => {
@@ -40,7 +41,7 @@ export const ColumnsEditForm: React.FC<FormProps> = ({title, open, setOpen, colu
     if (columnTitle?.value.trim()) {
       data.title = columnTitle?.value.trim();
     }
-    socket.emit('column:edit', data);
+    socket.emit(COLUMN_EDIT, data);
   };
 
   return (

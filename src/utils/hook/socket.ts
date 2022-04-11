@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { COLUMN_ADD, COLUMN_DELETE, COLUMN_EDIT, COLUMN_UPDATE_POSITIONS, DESK_UPDATE_POSITIONS, TASK_ADD, TASK_DELETE, TASK_EDIT, TASK_MOVE } from '../constants/socketEventTypes';
 import { socket } from '../../api/socket';
 import { columnActions } from '../../store/sliceColumn/sliceColumn';
 import { deskActions } from '../../store/sliceDesk/sliceDesk';
@@ -99,26 +100,26 @@ export const useSocket = () => {
   };
 
   useEffect(() => {
-    socket.on('desk:updatePositions', deskUpdatePositionsHandler);
-    socket.on('column:add', addColumnHandler);
-    socket.on('column:edit', editColumnHandler);
-    socket.on('column:delete', deleteColumnHandler);
-    socket.on('column:updatePositions', columnUpdatePositionsHandler);
-    socket.on('task:add', addTaskHandler);
-    socket.on('task:edit', editTaskHandler);
-    socket.on('task:delete', deleteTaskHandler);
-    socket.on('task:move', moveTaskHandler);
+    socket.on(DESK_UPDATE_POSITIONS, deskUpdatePositionsHandler);
+    socket.on(COLUMN_ADD, addColumnHandler);
+    socket.on(COLUMN_EDIT, editColumnHandler);
+    socket.on(COLUMN_DELETE, deleteColumnHandler);
+    socket.on(COLUMN_UPDATE_POSITIONS, columnUpdatePositionsHandler);
+    socket.on(TASK_ADD, addTaskHandler);
+    socket.on(TASK_EDIT, editTaskHandler);
+    socket.on(TASK_DELETE, deleteTaskHandler);
+    socket.on(TASK_MOVE, moveTaskHandler);
 
     return () => {
-      socket.off('desk:updatePositions', deskUpdatePositionsHandler);
-      socket.off('column:add', addColumnHandler);
-      socket.off('column:edit', editColumnHandler);
-      socket.off('column:delete', deleteColumnHandler);
-      socket.off('column:updatePositions', columnUpdatePositionsHandler);
-      socket.off('task:add', addTaskHandler);
-      socket.off('task:edit', editTaskHandler);
-      socket.off('task:delete', deleteTaskHandler);
-      socket.off('task:move', moveTaskHandler);
+      socket.off(DESK_UPDATE_POSITIONS, deskUpdatePositionsHandler);
+      socket.off(COLUMN_ADD, addColumnHandler);
+      socket.off(COLUMN_EDIT, editColumnHandler);
+      socket.off(COLUMN_DELETE, deleteColumnHandler);
+      socket.off(COLUMN_UPDATE_POSITIONS, columnUpdatePositionsHandler);
+      socket.off(TASK_ADD, addTaskHandler);
+      socket.off(TASK_EDIT, editTaskHandler);
+      socket.off(TASK_DELETE, deleteTaskHandler);
+      socket.off(TASK_MOVE, moveTaskHandler);
     };
   }, []);
 };

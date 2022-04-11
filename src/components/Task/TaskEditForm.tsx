@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { styled } from '@mui/styles';
 import { Typography } from '@mui/material';
 import { socket } from '../../api/socket';
+import { TASK_DELETE, TASK_EDIT } from '../../utils/constants/socketEventTypes';
 
 interface FormProps {
   open: boolean;
@@ -32,7 +33,7 @@ interface IEditTask {
 export const TaskEditForm: React.FC<FormProps> = ({ open, setOpen, taskId, columnId, priority, title, description }) => {
   const handleDelete = () => {
     setOpen(false);
-    socket.emit('task:delete', { id: taskId, columnId, });
+    socket.emit(TASK_DELETE, { id: taskId, columnId, });
   };
 
   const handleClose = () => {
@@ -48,7 +49,7 @@ export const TaskEditForm: React.FC<FormProps> = ({ open, setOpen, taskId, colum
     if (taskTitle?.value.trim()) data.title = taskTitle?.value.trim();
     if (prioritySlider?.innerText) data.priority = +prioritySlider?.innerText;
     if (taskDescription?.value) data.description = taskDescription?.value.trim();
-    socket.emit('task:edit', data);
+    socket.emit(TASK_EDIT, data);
   };
 
   return (

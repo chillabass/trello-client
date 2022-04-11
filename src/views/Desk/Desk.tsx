@@ -11,6 +11,7 @@ import { socket } from '../../api/socket';
 import { useAppDispatch, useAppSelector } from '../../utils/hook/redux';
 import { StyledColumnsWrapper } from './Desk.styles';
 import { deskActions } from '../../store/sliceDesk/sliceDesk';
+import { COLUMN_ADD, DESK_UPDATE_POSITIONS } from '../../utils/constants/socketEventTypes';
 
 export const Deskpage: React.FC = () => {
   const location = useLocation();
@@ -35,7 +36,7 @@ export const Deskpage: React.FC = () => {
 
   const getData = (title: string | null | undefined) => {
     if (title) {
-      socket.emit('column:add', { title, deskId });
+      socket.emit(COLUMN_ADD, { title, deskId });
     }
   }
 
@@ -44,7 +45,7 @@ export const Deskpage: React.FC = () => {
       positions = desks[deskId].positions;
       const newPositions = applyDrag(positions, dropResult);
       dispatch(deskActions.updateColumnPositions({ id: deskId, pos: newPositions })); // update on frontend
-      socket.emit('desk:updatePositions', { deskId, positions: newPositions });
+      socket.emit(DESK_UPDATE_POSITIONS, { deskId, positions: newPositions });
     }
   };
 

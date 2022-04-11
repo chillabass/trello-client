@@ -6,6 +6,7 @@ import { userActions } from './sliceUser';
 import { deskActions, IDeskObject } from '../sliceDesk/sliceDesk';
 import { columnActions, IColumnObject } from '../sliceColumn/sliceColumn';
 import { taskActions, ITaskObject } from '../sliceTask/sliceTask';
+import { setUser } from './actionUser';
 
 export const fetchSignUp = createAsyncThunk(
   'users/fetchSignUp',
@@ -53,12 +54,12 @@ export const fetchSignIn = createAsyncThunk(
   }
 );
 
-export const fetchEditProfile = createAsyncThunk<IUserData, object>(
+export const fetchEditProfile = createAsyncThunk(
   'users/fetchEditProfile',
-  async (data: object, { rejectWithValue }) => {
+  async (data: object, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post('/users/edit', data);
-      return response.data;
+      dispatch(userActions.setUser(response.data.user));
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -68,12 +69,12 @@ export const fetchEditProfile = createAsyncThunk<IUserData, object>(
 
 export const fetchChangeAvatar = createAsyncThunk(
   'users/fetchChangeAvatar',
-  async (data: IAvatar, { rejectWithValue }) => {
+  async (data: IAvatar, { dispatch, rejectWithValue }) => {
     try {
       const formData = new FormData();
       formData.append('avatar', data.file, data.name);
       const response = await api.post('/loads/loadAvatar', formData);
-      return response.data;
+      dispatch(userActions.setUser(response.data.user));
     } catch (e: any) {
       alert(e.response?.data);
       return rejectWithValue(e.response?.data);
@@ -85,11 +86,11 @@ export const fetchGetUser = createAsyncThunk(
   'users/fetchGetUser',
   async (_: void, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.get('/users/auth');
-      const user: IUser = response.data.user;
+      const response = await api.get('/users/getuser');
+      const user = response.data.user;
       const token: string = response.data.token;
       const isAuth: boolean = !!user;
-      const desks: IDeskObject = response.data.user.desks;
+      const desks: IDeskObject = user.desks;
       const columns: IColumnObject = response.data.user.columns;
       const tasks: ITaskObject = response.data.user.tasks;
 

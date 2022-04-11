@@ -1,0 +1,9 @@
+export const DESK_UPDATE_POSITIONS = 'desk:updatePositions';
+export const COLUMN_ADD = 'column:add';
+export const COLUMN_EDIT = 'column:edit';
+export const COLUMN_DELETE = 'column:delete';
+export const COLUMN_UPDATE_POSITIONS = 'column:updatePositions';
+export const TASK_ADD = 'task:add';
+export const TASK_EDIT = 'task:edit';
+export const TASK_DELETE = 'task:delete';
+export const TASK_MOVE = 'task:move';
