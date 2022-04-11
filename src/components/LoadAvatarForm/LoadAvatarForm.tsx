@@ -4,16 +4,16 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { IAvatar } from '../../types/avatar';
+import { IFetchChangeAvatar } from '../../types/user';
 
 interface FormProps {
   open: boolean;
   setOpen: (flag: boolean) => void;
-  getData: (data: IAvatar) => void;
+  getData: (data: IFetchChangeAvatar) => void;
 };
 
 export const FileFormDialog: React.FC<FormProps> = ({ open, setOpen, getData, }) => {
-  const avatar: IAvatar = {
+  const avatar: IFetchChangeAvatar = {
     name: '',
     file: '',
   };

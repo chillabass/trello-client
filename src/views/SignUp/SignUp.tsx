@@ -5,14 +5,7 @@ import { Navigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../utils/hook/redux';
 import { fetchSignUp } from '../../store/sliceUser/thunkUser';
 import { StyledButton, StyledForm, StyledSignup, StyledTitle } from './SignUp.styles';
-
-interface UserData {
-  [login: string]: string;
-  email: string;
-  password: string;
-  confirm: string;
-  fullName: string;
-};
+import { IFetchSignUp } from '../../types/user';
 
 export const Signuppage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +13,7 @@ export const Signuppage: React.FC = () => {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const isValidData = (userData: UserData): boolean => {
+  const isValidData = (userData: IFetchSignUp): boolean => {
     for (let key in userData) {
       userData[key] = userData[key].trim();
       if (userData[key] === '') {
@@ -54,7 +47,7 @@ export const Signuppage: React.FC = () => {
       confirm: { value: string };
       fullname: { value: string };
     };
-    const userData: UserData = {
+    const userData: IFetchSignUp = {
       login: target.login.value,
       email: target.email.value,
       password: target.password.value,

@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { EditFormDialog } from './EditProfileForm';
-import { IEditData } from '../../types/editProfile';
 import { FileFormDialog } from '../LoadAvatarForm/LoadAvatarForm';
-import { IAvatar } from '../../types/avatar';
 import { BASE_URL } from '../../utils/constants/server';
 import { useAppDispatch, useAppSelector } from '../../utils/hook/redux';
 import {
@@ -16,6 +14,7 @@ import {
 } from './ProfileInfo.styles';
 import { userActions } from '../../store/sliceUser/sliceUser';
 import { fetchChangeAvatar, fetchEditProfile } from '../../store/sliceUser/thunkUser';
+import { IFetchChangeAvatar, IFetchEditProfile } from '../../types/user';
 
 export const ProfileInfo: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +23,7 @@ export const ProfileInfo: React.FC = () => {
   const [formActive, setFormActive] = useState(false);
   const [avatarActive, setAvatarActive] = useState(false);
 
-  const getData = (data: IEditData) => {
+  const getData = (data: IFetchEditProfile) => {
     dispatch(fetchEditProfile(data));
   }
 
@@ -32,7 +31,7 @@ export const ProfileInfo: React.FC = () => {
     setAvatarActive(true)
   }
 
-  const getAvatar = (data: IAvatar) => {
+  const getAvatar = (data: IFetchChangeAvatar) => {
     dispatch(fetchChangeAvatar(data));
   }
 

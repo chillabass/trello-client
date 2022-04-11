@@ -2,13 +2,9 @@ import React, { SyntheticEvent } from 'react';
 import { Navigate } from 'react-router';
 import { FormItem } from '../../components/FormItem/FormItem';
 import { fetchSignIn } from '../../store/sliceUser/thunkUser';
+import { IFetchSignIn } from '../../types/user';
 import { useAppDispatch, useAppSelector } from '../../utils/hook/redux';
 import { StyledButton, StyledForm, StyledSignup, StyledTitle } from './SignIn.styles';
-
-interface UserData {
-  login: string;
-  password: string;
-};
 
 export const Signinpage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +16,7 @@ export const Signinpage: React.FC = () => {
       login: { value: string };
       password: { value: string };
     };
-    const userData: UserData = {
+    const userData: IFetchSignIn = {
       login: target.login.value,
       password: target.password.value,
     };

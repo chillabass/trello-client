@@ -5,12 +5,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { IEditData } from '../../types/editProfile';
+import { IFetchEditProfile } from '../../types/user';
 
 interface FormProps {
   open: boolean;
   setOpen: (flag: boolean) => void;
-  getData: (data: IEditData) => void;
+  getData: (data: IFetchEditProfile) => void;
 };
 
 export const EditFormDialog: React.FC<FormProps> = ({ open, setOpen, getData, }) => {
@@ -23,7 +23,7 @@ export const EditFormDialog: React.FC<FormProps> = ({ open, setOpen, getData, })
     handleClose();
     const nameInput: HTMLInputElement | null = document.querySelector('#fullName');
     const passInput: HTMLInputElement | null = document.querySelector('#password');
-    let data: IEditData = {};
+    let data: IFetchEditProfile = {};
     if (nameInput?.value.trim()) data.fullName = nameInput?.value.trim();
     if (passInput?.value.trim()) data.password = passInput?.value.trim();
     getData(data);
