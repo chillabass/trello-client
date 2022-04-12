@@ -7,3 +7,5 @@ export const TASK_ADD = 'task:add';
 export const TASK_EDIT = 'task:edit';
 export const TASK_DELETE = 'task:delete';
 export const TASK_MOVE = 'task:move';
+export const USER_DEPOSIT = 'user:deposit';
+export const USER_SUBSCRIBE = 'user:subscribe';

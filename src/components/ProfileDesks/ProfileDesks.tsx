@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { CreateItem } from '../DeskItem/DeskItem';
 
 import { StyledContainer } from './ProfileDesks.styles';
@@ -20,17 +20,18 @@ export const ProfileDesks: React.FC = () => {
     return Object.values(desks);
   }, [desks]);
 
-  const getTitle = useCallback((title: string) => {
+  const getTitle = (title: string) => {
     if (title) {
       dispatch(fetchAddDesk(title));
     }
-  }, [])
+  };
 
   return (
     <StyledContainer>
       {desksList.map((desk) => {
         return (
           <CreateItem
+            key={desk.id}
             title={desk.title}
             href={`${desk.id}`}
           />

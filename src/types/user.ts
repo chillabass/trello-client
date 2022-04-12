@@ -5,6 +5,7 @@ export interface IUser {
   fullName: string;
   role: string;
   avatar: string;
+  balance: number;
 };
 
 export interface IUserData {

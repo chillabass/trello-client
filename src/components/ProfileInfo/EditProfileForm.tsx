@@ -30,33 +30,31 @@ export const EditFormDialog: React.FC<FormProps> = ({ open, setOpen, getData, })
   };
 
   return (
-    <div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="fullName"
-            label='Full name'
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            margin="dense"
-            id="password"
-            label='Password'
-            type="password"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleCreate}>Accept</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Edit Profile</DialogTitle>
+      <DialogContent>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="fullName"
+          label='Full name'
+          type="text"
+          fullWidth
+          variant="standard"
+        />
+        <TextField
+          margin="dense"
+          id="password"
+          label='Password'
+          type="password"
+          fullWidth
+          variant="standard"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleCreate}>Accept</Button>
+      </DialogActions>
+    </Dialog>
   );
 };

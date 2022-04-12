@@ -1,5 +1,17 @@
 import { useEffect } from 'react';
-import { COLUMN_ADD, COLUMN_DELETE, COLUMN_EDIT, COLUMN_UPDATE_POSITIONS, DESK_UPDATE_POSITIONS, TASK_ADD, TASK_DELETE, TASK_EDIT, TASK_MOVE } from '../constants/socketEventTypes';
+import {
+  COLUMN_ADD,
+  COLUMN_DELETE,
+  COLUMN_EDIT,
+  COLUMN_UPDATE_POSITIONS,
+  DESK_UPDATE_POSITIONS,
+  TASK_ADD,
+  TASK_DELETE,
+  TASK_EDIT,
+  TASK_MOVE,
+  USER_DEPOSIT,
+  USER_SUBSCRIBE
+} from '../constants/socketEventTypes';
 import { socket } from '../../api/socket';
 import { columnActions } from '../../store/sliceColumn/sliceColumn';
 import { deskActions } from '../../store/sliceDesk/sliceDesk';
@@ -8,6 +20,8 @@ import { IColumn } from '../../types/column';
 import { IDesk } from '../../types/desk';
 import { ITask } from '../../types/task';
 import { useAppDispatch } from './redux';
+import { userActions } from '../../store/sliceUser/sliceUser';
+import { IUser } from '../../types/user';
 
 export const useSocket = () => {
   const dispatch = useAppDispatch();
@@ -98,6 +112,28 @@ export const useSocket = () => {
     }) => {
     dispatch(taskActions.moveTask({ id: data.id, columnId: data.columnId }));
   };
+  
+  const userDepositHandler = (
+    data: {
+      message: string;
+      status: number;
+      user: IUser,
+    }) => {
+    if (data.status) {
+      dispatch(userActions.setUser(data.user));
+    }
+  };
+
+  const userSubscribeHandler = (
+    data: {
+      message: string;
+      status: number;
+      user: IUser,
+    }) => {
+    if (data.status) {
+      dispatch(userActions.setUser(data.user));
+    }
+  };
 
   useEffect(() => {
     socket.on(DESK_UPDATE_POSITIONS, deskUpdatePositionsHandler);
@@ -109,6 +145,8 @@ export const useSocket = () => {
     socket.on(TASK_EDIT, editTaskHandler);
     socket.on(TASK_DELETE, deleteTaskHandler);
     socket.on(TASK_MOVE, moveTaskHandler);
+    socket.on(USER_DEPOSIT, userDepositHandler);
+    socket.on(USER_SUBSCRIBE, userSubscribeHandler);
 
     return () => {
       socket.off(DESK_UPDATE_POSITIONS, deskUpdatePositionsHandler);
@@ -120,6 +158,8 @@ export const useSocket = () => {
       socket.off(TASK_EDIT, editTaskHandler);
       socket.off(TASK_DELETE, deleteTaskHandler);
       socket.off(TASK_MOVE, moveTaskHandler);
+      socket.off(USER_DEPOSIT, userDepositHandler);
+      socket.off(USER_SUBSCRIBE, userSubscribeHandler);
     };
   }, []);
 };
