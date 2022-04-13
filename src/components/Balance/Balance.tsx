@@ -29,6 +29,7 @@ export const Balance: React.FC<BalanceProps> = ({ balance }) => {
   };
 
   const id = useAppSelector(state => state.users.currentUser?.id);
+  const email = useAppSelector(state => state.users.currentUser?.email);
 
   const onDepositHandler = () => {
     setOpen(false);
@@ -41,7 +42,7 @@ export const Balance: React.FC<BalanceProps> = ({ balance }) => {
 
   const onSubscribeHandler = () => {
     setOpen(false);
-    socket.emit(USER_SUBSCRIBE, { id });
+    socket.emit(USER_SUBSCRIBE, { id, email });
   };
 
 
