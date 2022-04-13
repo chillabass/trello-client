@@ -1,9 +1,10 @@
-import { Navigate, useLocation } from "react-router"
-import { store } from "../../store/store";
+import { Navigate, useLocation } from 'react-router'
+import { useAppSelector } from '../hook/redux';
 
 export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const location = useLocation();
-  const isAuth = store.getState().users['isAuth'];
+  const isAuth = useAppSelector(state => state.users.isAuth);
+  // const isAuth = localStorage.getItem('token');
 
   if (isAuth) {
     return children;

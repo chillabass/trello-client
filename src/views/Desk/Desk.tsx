@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useParams } from 'react-router';
 import { BoardHeader } from '../../components/BoardHeader/BoardHeader';
 import { Column } from '../../components/Column/Column';
 import { CreateButton } from '../../components/CreateButton/CreateButton';
@@ -14,13 +14,13 @@ import { deskActions } from '../../store/sliceDesk/sliceDesk';
 import { COLUMN_ADD, DESK_UPDATE_POSITIONS } from '../../utils/constants/socketEventTypes';
 
 export const Deskpage: React.FC = () => {
-  const location = useLocation();
   const dispatch = useAppDispatch();
 
   const [formActive, setFormActive] = useState(false);
+  const { id } = useParams();
 
   const desks = useAppSelector(state => state.desks.desks);
-  const deskId = +location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
+  const deskId = Number(id);
   const deskTitle: string = desks[deskId].title;
 
   let positions = desks[deskId].positions;
@@ -44,7 +44,7 @@ export const Deskpage: React.FC = () => {
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       positions = desks[deskId].positions;
       const newPositions = applyDrag(positions, dropResult);
-      dispatch(deskActions.updateColumnPositions({ id: deskId, pos: newPositions })); // update on frontend
+      dispatch(deskActions.updateColumnPositions({ id: deskId, pos: newPositions }));
       socket.emit(DESK_UPDATE_POSITIONS, { deskId, positions: newPositions });
     }
   };

@@ -1,43 +1,65 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
+import { ErrorMessage, Formik } from 'formik';
 import { Navigate } from 'react-router';
-import { FormItem } from '../../components/FormItem/FormItem';
 import { fetchSignIn } from '../../store/sliceUser/thunkUser';
-import { IFetchSignIn } from '../../types/user';
 import { useAppDispatch, useAppSelector } from '../../utils/hook/redux';
-import { StyledButton, StyledForm, StyledSignup, StyledTitle } from './SignIn.styles';
+import {
+  StyledButton,
+  StyledErrorMessage,
+  StyledForm,
+  StyledSignup,
+  StyledTitle
+} from './SignIn.styles';
+import * as Yup from 'yup';
+import { StyledField } from '../SignUp/SignUp.styles';
 
 export const Signinpage: React.FC = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(state => state.users.isAuth);
 
-  const onSubmitHandler = (event: SyntheticEvent): void => {
-    event.preventDefault();
-    const target = event.target as typeof event.target & {
-      login: { value: string };
-      password: { value: string };
-    };
-    const userData: IFetchSignIn = {
-      login: target.login.value,
-      password: target.password.value,
-    };
-    dispatch(fetchSignIn(userData));
-  }
-
   return (
     isAuth ? <Navigate to='/profile' /> :
-      <StyledSignup>
-        <StyledTitle>Authentication</StyledTitle>
-        <StyledForm onSubmit={onSubmitHandler}>
-          <FormItem
-            label='Login'
-            name='login'
-            inputType='text' />
-          <FormItem
-            label='Password'
-            name='password'
-            inputType='password' />
-          <StyledButton>Sign in</StyledButton>
-        </StyledForm>
-      </StyledSignup>
+      <Formik
+        initialValues={{
+          login: '',
+          password: '',
+        }}
+        validationSchema={Yup.object({
+          login: Yup.string()
+            .trim()
+            .max(15, 'Must be 15 characters or less')
+            .required('Required'),
+          password: Yup.string()
+            .min(6, 'Must be 6-20 characters')
+            .max(20, 'Must be 6-20 characters')
+            .required('Required'),
+        })}
+        onSubmit={(values, { setSubmitting }) => {
+          dispatch(fetchSignIn(values));
+          setSubmitting(false);
+        }}
+      >
+        <StyledSignup>
+          <StyledTitle>Authentication</StyledTitle>
+          <StyledForm>
+            <StyledField
+              name="login"
+              placeholder="Login"
+            />
+            <StyledErrorMessage>
+              <ErrorMessage name="login" />
+            </StyledErrorMessage>
+            <StyledField
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
+            <StyledErrorMessage>
+              <ErrorMessage name="password" />
+            </StyledErrorMessage>
+            <StyledButton type="submit">Auth</StyledButton>
+          </StyledForm>
+        </StyledSignup>
+      </Formik>
   )
 };

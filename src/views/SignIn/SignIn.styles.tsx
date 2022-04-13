@@ -1,3 +1,4 @@
+import { Field, Form } from "formik";
 import styled from "styled-components";
 
 export const StyledSignup = styled.div`
@@ -15,7 +16,9 @@ export const StyledTitle = styled.h1`
   font-size: 50px;
 `;
 
-export const StyledForm = styled.form`
+export const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
   background-color: #ebecf0;
   color: #1b1b1b;
   font-size: 15px;
@@ -25,9 +28,27 @@ export const StyledForm = styled.form`
   padding: 10px 15px;
 `;
 
+export const StyledField = styled(Field)`
+  border: none;
+  border-radius: 5px;
+  height: 37px;
+  font-size: 18px;
+  padding: 25px;
+  margin: 10px 5px;
+  transition: .05s;
+
+  &:focus {
+    outline: 2px solid #0b77db ;
+  }
+`;
+
+export const StyledErrorMessage = styled.div`
+  color: #c40202;
+`;
+
 export const StyledButton = styled.button`
   padding: 10px 20px;
-  margin-right: 20px;
+  align-self: center;
   color: #eef;
   background-color: #ff9926;
   border: none;

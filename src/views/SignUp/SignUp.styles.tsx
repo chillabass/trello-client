@@ -16,16 +16,6 @@ export const StyledTitle = styled.h1`
   font-size: 50px;
 `;
 
-// export const StyledForm = styled.form`
-//   background-color: #ebecf0;
-//   color: #1b1b1b;
-//   font-size: 15px;
-//   width: 400px;
-//   height: fit-content;
-//   border-radius: 10px;
-//   padding: 10px 15px;
-// `;
-
 export const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
@@ -59,7 +49,6 @@ export const StyledErrorMessage = styled.div`
 
 export const StyledButton = styled.button`
   padding: 10px 20px;
-  width: 88%;
   margin: 10px;
   color: #eef;
   background-color: #ff9926;

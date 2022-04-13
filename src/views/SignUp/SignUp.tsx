@@ -30,9 +30,10 @@ export const Signuppage: React.FC = () => {
         }}
         validationSchema={Yup.object({
           login: Yup.string()
+            .trim()
             .max(15, 'Must be 15 characters or less')
             .required('Required'),
-          email: Yup.string().email('Invalid email address').required('Required'),
+          email: Yup.string().trim().email('Invalid email address').required('Required'),
           password: Yup.string()
             .min(6, 'Must be 6-20 characters')
             .max(20, 'Must be 6-20 characters')
@@ -41,11 +42,13 @@ export const Signuppage: React.FC = () => {
             .oneOf([Yup.ref('password')], `Passwords don't match`)
             .required('Requerid'),
           fullName: Yup.string()
+            .trim()
             .max(60, 'Must be no more 60 characters')
             .required('Required'),
         })}
         onSubmit={(values, { setSubmitting }) => {
           dispatch(fetchSignUp(values));
+          setSubmitting(false);
         }}
       >
         <StyledSignup>
@@ -89,7 +92,6 @@ export const Signuppage: React.FC = () => {
             <StyledErrorMessage>
               <ErrorMessage name="fullName" />
             </StyledErrorMessage>
-
             <StyledButton type="submit">Register</StyledButton>
           </StyledForm>
         </StyledSignup>
