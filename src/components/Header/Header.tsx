@@ -19,14 +19,14 @@ export const Header: React.FC = () => {
       <StyledLogo to='/'>Trello</StyledLogo>
       <StyledProfileBlock>
         {user ?
-        <>
-          <Balance
-            balance={user.balance}
+          <>
+            <Balance
+              balance={user.balance}
             />
-          <StyledProfile to='/profile'>
-            <Avatar src={user.avatar ? `${BASE_URL}/${user.avatar}` : ''} />
-          </StyledProfile> 
-        </>
+            <StyledProfile to='/profile'>
+              <Avatar src={user.avatar ? `${BASE_URL}/${user.avatar}` : ''} />
+            </StyledProfile>
+          </>
           :
           <>
             <StyledButton to='/signup'>Sign Up</StyledButton>

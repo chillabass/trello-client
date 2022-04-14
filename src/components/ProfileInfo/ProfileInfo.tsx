@@ -47,7 +47,7 @@ export const ProfileInfo: React.FC = () => {
   return (
     <StyledContainer>
       <StyledInfoLeft>
-        <StyledAvatar src={user ? `${BASE_URL}/${user.avatar}` : ''} />
+        <StyledAvatar src={user?.avatar ? `${BASE_URL}/${user.avatar}` : ''} />
         <Button
           color='primary'
           onClick={clickAvatarHandler}

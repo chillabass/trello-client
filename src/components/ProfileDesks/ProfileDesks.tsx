@@ -32,7 +32,7 @@ export const ProfileDesks: React.FC = () => {
           <CreateItem
             key={desk.id}
             title={desk.title}
-            href={`${desk.id}`}
+            href={String(desk.id)}
           />
         );
       })}

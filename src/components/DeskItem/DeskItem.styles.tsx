@@ -21,8 +21,6 @@ export const StyledContainer = styled(Link)`
   text-decoration: none;
   text-transform: uppercase;
   color: black;
-  -webkit-box-shadow: 0px 1px 8px 1px rgba(34, 60, 80, 0.2);
-  -moz-box-shadow: 0px 1px 8px 1px rgba(34, 60, 80, 0.2);
   box-shadow: 0px 1px 8px 1px rgba(34, 60, 80, 0.2);
   transition: .2s;
 
